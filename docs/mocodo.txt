@@ -1,0 +1,66 @@
+CREATE TABLE UTILISATEUR (
+  id_user  TEXT NOT NULL PRIMARY KEY,
+  nom      TEXT,
+  prenom   TEXT,
+  email    TEXT UNIQUE,
+  pseudo   TEXT UNIQUE,
+  promo    INTEGER,
+  password TEXT,
+  admin    INTEGER,
+  active   INTEGER
+);
+
+CREATE TABLE EVENT (
+  id_event    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  nom         TEXT,
+  date_dbt    TEXT,
+  date_fin    TEXT,
+  lieu        TEXT,
+  image       TEXT,
+  description TEXT,
+  id_user     TEXT NOT NULL
+  FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
+);
+
+CREATE TABLE PARTICIPATION (
+  id_user  TEXT NOT NULL,
+  id_event INTEGER NOT NULL,
+  PRIMARY KEY (id_user, id_event),
+  FOREIGN KEY (id_event) REFERENCES EVENT (id_event),
+  FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
+);
+
+CREATE TABLE COMMENTAIRE (
+  id_user  TEXT NOT NULL,
+  id_event INTEGER NOT NULL,
+  message  TEXT,
+  date     TEXT,
+  heure    TEXT,
+  PRIMARY KEY (id_user, id_event, date, heure),
+  FOREIGN KEY (id_event) REFERENCES EVENT (id_event),
+  FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
+);
+
+CREATE TABLE ENTITES (
+  id_entites TEXT NOT NULL PRIMARY KEY,
+  type       TEXT,
+  id_event   INTEGER NOT NULL,
+  FOREIGN KEY (id_event) REFERENCES EVENT (id_event)
+);
+
+CREATE TABLE ATTRIBUTS (
+  id_attribut TEXT NOT NULL PRIMARY KEY,
+  name        TEXT,
+  description TEXT,
+  type        TEXT
+);
+
+CREATE TABLE VALEURS (
+  id_attribut TEXT NOT NULL,
+  id_entites  TEXT NOT NULL,
+  id_valeur   TEXT,
+  valeur      TEXT,
+  PRIMARY KEY (id_attribut, id_entites),
+  FOREIGN KEY (id_entites) REFERENCES ENTITES (id_entites),
+  FOREIGN KEY (id_attribut) REFERENCES ATTRIBUTS (id_attribut)
+);
