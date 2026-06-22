@@ -1,7 +1,5 @@
 PRAGMA foreign_keys = ON;
 
-/* Activation foreign key: not auto in SQLite*/
-
 CREATE TABLE UTILISATEUR (
   id_user  TEXT PRIMARY KEY,
   nom      TEXT NOT NULL,
@@ -17,8 +15,8 @@ CREATE TABLE UTILISATEUR (
 CREATE TABLE EVENT (
   id_event    INTEGER PRIMARY KEY AUTOINCREMENT,
   nom         TEXT NOT NULL,
-  date_dbt    DATETIME NOT NULL,
-  date_fin    DATETIME NOT NULL,
+  date_dbt    TEXT NOT NULL,
+  date_fin    TEXT NOT NULL,
   lieu        TEXT NOT NULL,
   image       TEXT,
   description TEXT,
@@ -38,7 +36,7 @@ CREATE TABLE COMMENTAIRE (
   id_user  TEXT NOT NULL,
   id_event INTEGER NOT NULL,
   message  TEXT NOT NULL,
-  date_heure DATETIME,
+  date_heure TEXT,
   PRIMARY KEY (id_user, id_event, date_heure),
   FOREIGN KEY (id_event) REFERENCES EVENT (id_event),
   FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
