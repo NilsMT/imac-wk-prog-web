@@ -1,10 +1,11 @@
-#pour pouvoir faire des service.XXX
 import sys, os
+#to be able to do service.XXX
 sys.path.insert(0, os.path.dirname(__file__))
 
 #import
 from flask import Flask, render_template
 import database
+
 #services
 import service.example
 
