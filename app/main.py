@@ -21,4 +21,4 @@ def example():
 #special behaviors
 @app.teardown_appcontext
 def on_close(exception):
-    database.close_connection()
+    database.disconnect_db()
