@@ -1,68 +1,14 @@
-PRAGMA foreign_keys = ON;
+UTILISATEUR: id_user, nom, prenom, email, pseudo, promo, password, admin, active
 
-/* Activation foreign key: not auto in SQLite*/
+COMMENTER, 0N UTILISATEUR, 0N EVENT: message, date_heure
+CRÉER, 0N UTILISATEUR, 11 EVENT
+PARTICIPER, 0N UTILISATEUR, 1N EVENT
 
-CREATE TABLE UTILISATEUR (
-  id_user  TEXT PRIMARY KEY,
-  nom      TEXT NOT NULL,
-  prenom   TEXT NOT NULL,
-  email    TEXT UNIQUE NOT NULL,
-  pseudo   TEXT UNIQUE NOT NULL,
-  promo    INTEGER,
-  password TEXT NOT NULL,
-  admin    INTEGER,
-  active   INTEGER
-);
+EVENT: id_event, nom, date_dbt, date_fin, lieu, image, description
 
-CREATE TABLE EVENT (
-  id_event    INTEGER PRIMARY KEY AUTOINCREMENT,
-  nom         TEXT NOT NULL,
-  date_dbt    DATETIME NOT NULL,
-  date_fin    DATETIME NOT NULL,
-  lieu        TEXT NOT NULL,
-  image       TEXT,
-  description TEXT,
-  id_user     TEXT NOT NULL,
-  FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
-);
+ENTITES: id_entites, type
 
-CREATE TABLE PARTICIPATION (
-  id_user  TEXT NOT NULL,
-  id_event INTEGER NOT NULL,
-  PRIMARY KEY (id_user, id_event),
-  FOREIGN KEY (id_event) REFERENCES EVENT (id_event),
-  FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
-);
+AVOIR, 0N EVENT, 11 ENTITES
+VALEURS, 0N ATTRIBUTS, 0N ENTITES : valeur
 
-CREATE TABLE COMMENTAIRE (
-  id_user  TEXT NOT NULL,
-  id_event INTEGER NOT NULL,
-  message  TEXT NOT NULL,
-  date_heure DATETIME,
-  PRIMARY KEY (id_user, id_event, date_heure),
-  FOREIGN KEY (id_event) REFERENCES EVENT (id_event),
-  FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
-);
-
-CREATE TABLE ENTITES (
-  id_entites INTEGER PRIMARY KEY AUTOINCREMENT,
-  type       TEXT,
-  id_event   INTEGER NOT NULL,
-  FOREIGN KEY (id_event) REFERENCES EVENT (id_event)
-);
-
-CREATE TABLE ATTRIBUTS (
-  id_attribut INTEGER PRIMARY KEY AUTOINCREMENT,
-  name        TEXT,
-  description TEXT,
-  type        TEXT
-);
-
-CREATE TABLE VALEURS (
-  id_attribut INTEGER NOT NULL,
-  id_entites  INTEGER NOT NULL,
-  valeur      TEXT,
-  PRIMARY KEY (id_attribut, id_entites),
-  FOREIGN KEY (id_entites) REFERENCES ENTITES (id_entites),
-  FOREIGN KEY (id_attribut) REFERENCES ATTRIBUTS (id_attribut)
-);
+ATTRIBUTS: id_attribut, name, description, type
