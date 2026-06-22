@@ -1,24 +1,28 @@
+PRAGMA foreign_keys = ON;
+
+/* Activation foreign key: not auto in SQLite*/
+
 CREATE TABLE UTILISATEUR (
-  id_user  TEXT NOT NULL PRIMARY KEY,
-  nom      TEXT,
-  prenom   TEXT,
-  email    TEXT UNIQUE,
-  pseudo   TEXT UNIQUE,
+  id_user  TEXT PRIMARY KEY,
+  nom      TEXT NOT NULL,
+  prenom   TEXT NOT NULL,
+  email    TEXT UNIQUE NOT NULL,
+  pseudo   TEXT UNIQUE NOT NULL,
   promo    INTEGER,
-  password TEXT,
+  password TEXT NOT NULL,
   admin    INTEGER,
   active   INTEGER
 );
 
 CREATE TABLE EVENT (
-  id_event    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  nom         TEXT,
-  date_dbt    TEXT,
-  date_fin    TEXT,
-  lieu        TEXT,
+  id_event    INTEGER PRIMARY KEY AUTOINCREMENT,
+  nom         TEXT NOT NULL,
+  date_dbt    DATETIME NOT NULL,
+  date_fin    DATETIME NOT NULL,
+  lieu        TEXT NOT NULL,
   image       TEXT,
   description TEXT,
-  id_user     TEXT NOT NULL
+  id_user     TEXT NOT NULL,
   FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
 );
 
@@ -33,32 +37,30 @@ CREATE TABLE PARTICIPATION (
 CREATE TABLE COMMENTAIRE (
   id_user  TEXT NOT NULL,
   id_event INTEGER NOT NULL,
-  message  TEXT,
-  date     TEXT,
-  heure    TEXT,
-  PRIMARY KEY (id_user, id_event, date, heure),
+  message  TEXT NOT NULL,
+  date_heure DATETIME,
+  PRIMARY KEY (id_user, id_event, date_heure),
   FOREIGN KEY (id_event) REFERENCES EVENT (id_event),
   FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
 );
 
 CREATE TABLE ENTITES (
-  id_entites TEXT NOT NULL PRIMARY KEY,
+  id_entites INTEGER PRIMARY KEY AUTOINCREMENT,
   type       TEXT,
   id_event   INTEGER NOT NULL,
   FOREIGN KEY (id_event) REFERENCES EVENT (id_event)
 );
 
 CREATE TABLE ATTRIBUTS (
-  id_attribut TEXT NOT NULL PRIMARY KEY,
+  id_attribut INTEGER PRIMARY KEY AUTOINCREMENT,
   name        TEXT,
   description TEXT,
   type        TEXT
 );
 
 CREATE TABLE VALEURS (
-  id_attribut TEXT NOT NULL,
-  id_entites  TEXT NOT NULL,
-  id_valeur   TEXT,
+  id_attribut INTEGER NOT NULL,
+  id_entites  INTEGER NOT NULL,
   valeur      TEXT,
   PRIMARY KEY (id_attribut, id_entites),
   FOREIGN KEY (id_entites) REFERENCES ENTITES (id_entites),
