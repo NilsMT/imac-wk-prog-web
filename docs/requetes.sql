@@ -1,9 +1,9 @@
 PRAGMA foreign_keys = ON;
 
-CREATE TABLE UTILISATEUR (
+CREATE TABLE USER (
   id_user  TEXT PRIMARY KEY,
-  nom      TEXT NOT NULL,
-  prenom   TEXT NOT NULL,
+  name      TEXT NOT NULL,
+  firstname   TEXT NOT NULL,
   email    TEXT UNIQUE NOT NULL,
   pseudo   TEXT UNIQUE NOT NULL,
   promo    INTEGER,
@@ -14,14 +14,14 @@ CREATE TABLE UTILISATEUR (
 
 CREATE TABLE EVENT (
   id_event    INTEGER PRIMARY KEY AUTOINCREMENT,
-  nom         TEXT NOT NULL,
-  date_dbt    TEXT NOT NULL,
-  date_fin    TEXT NOT NULL,
-  lieu        TEXT NOT NULL,
+  name        TEXT NOT NULL,
+  start_date  TEXT NOT NULL,
+  end_date    TEXT NOT NULL,
+  location    TEXT NOT NULL,
   image       TEXT,
   description TEXT,
   id_user     TEXT NOT NULL,
-  FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
+  FOREIGN KEY (id_user) REFERENCES USER (id_user)
 );
 
 CREATE TABLE PARTICIPATION (
@@ -29,38 +29,38 @@ CREATE TABLE PARTICIPATION (
   id_event INTEGER NOT NULL,
   PRIMARY KEY (id_user, id_event),
   FOREIGN KEY (id_event) REFERENCES EVENT (id_event),
-  FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
+  FOREIGN KEY (id_user) REFERENCES USER (id_user)
 );
 
-CREATE TABLE COMMENTAIRE (
+CREATE TABLE COMMENT (
   id_user  TEXT NOT NULL,
   id_event INTEGER NOT NULL,
   message  TEXT NOT NULL,
-  date_heure TEXT,
-  PRIMARY KEY (id_user, id_event, date_heure),
+  datetime TEXT,
+  PRIMARY KEY (id_user, id_event, datetime),
   FOREIGN KEY (id_event) REFERENCES EVENT (id_event),
-  FOREIGN KEY (id_user) REFERENCES UTILISATEUR (id_user)
+  FOREIGN KEY (id_user) REFERENCES USER (id_user)
 );
 
-CREATE TABLE ENTITES (
-  id_entites INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE ENTITY (
+  id_entity INTEGER PRIMARY KEY AUTOINCREMENT,
   type       TEXT,
   id_event   INTEGER NOT NULL,
   FOREIGN KEY (id_event) REFERENCES EVENT (id_event)
 );
 
-CREATE TABLE ATTRIBUTS (
-  id_attribut INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE ATTRIBUTE (
+  id_attribute INTEGER PRIMARY KEY AUTOINCREMENT,
   name        TEXT,
   description TEXT,
   type        TEXT
 );
 
-CREATE TABLE VALEURS (
+CREATE TABLE VALUE (
   id_attribut INTEGER NOT NULL,
-  id_entites  INTEGER NOT NULL,
-  valeur      TEXT,
-  PRIMARY KEY (id_attribut, id_entites),
-  FOREIGN KEY (id_entites) REFERENCES ENTITES (id_entites),
-  FOREIGN KEY (id_attribut) REFERENCES ATTRIBUTS (id_attribut)
+  id_entity  INTEGER NOT NULL,
+  value   TEXT,
+  PRIMARY KEY (id_attribut, id_entity),
+  FOREIGN KEY (id_entity) REFERENCES ENTITY (id_entity),
+  FOREIGN KEY (id_attribut) REFERENCES ATTRIBUTE (id_attribut)
 );

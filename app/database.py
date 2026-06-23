@@ -33,8 +33,13 @@ def query_db(query, args=(), one=False):
     Example:
         >>> query_db('SELECT * FROM users WHERE username = ?', [username], one=True)
     """
-
-    cur = get_db().execute(query, args)
-    rv = cur.fetchall()
-    cur.close()
-    return (rv[0] if rv else None) if one else rv
+    db = get_db()
+    cur = db.execute(query, args)
+    
+    if query.strip().upper().startswith("SELECT"):
+        rv = cur.fetchall()
+        cur.close()
+        return (rv[0] if rv else None) if one else rv
+    else:
+        db.commit()
+        return cur.rowcount
