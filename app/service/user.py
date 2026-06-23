@@ -1,5 +1,6 @@
 #import
 import model.user
+import sqlite3
 
 def registerUser(email,password,name,firstname,promo,pseudo):
     """
@@ -7,12 +8,18 @@ def registerUser(email,password,name,firstname,promo,pseudo):
 
         Return:
         >>> 0 if success
-        >>> 1 if user already exist
+        >>> 1 if user mail taken already
+        >>> 2 if user pseudo taken already
     """
-
-    qr = model.user.registerUser(email,password,name,firstname,promo,pseudo)
-    print(qr)
-    return int(qr != 1) 
+    try:
+        model.user.registerUser(email,password,name,firstname,promo,pseudo)
+        return 0
+    except sqlite3.IntegrityError as e:
+        if "USER.email" in str(e):
+            return 1
+        if "USER.pseudo" in str(e):
+            return 2
+        raise
 
 def deleteUser(email):
     """

@@ -92,7 +92,9 @@ def registerUser():
         case 0:
             return jsonify({"message" : "Register success"}),200
         case 1:
-            return jsonify({"message" : "Register failure : user already exist"}),409
+            return jsonify({"message" : "Register failure : user with that email already exist"}),409
+        case 2:
+            return jsonify({"message" : "Register failure : user with that pseudo already exist"}),409
         case _:
             return jsonify({"message" : "Register failure : unknown returned status"}),500
         
