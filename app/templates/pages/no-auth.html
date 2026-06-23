@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Accueil - Organ-IMAC{% endblock %} {%
+block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='assets/css/pages/no-auth.css') }}"
+/>
+{% endblock %} {% block content %}
+<div
+  class="container-fluid vh-80 d-flex align-items-center justify-content-center"
+>
+  <div class="row justify-content-center w-100">
+    <div class="col-lg-8 col-md-10 text-center px-4">
+      <!-- Titre -->
+      <div class="mb-4">
+        <h1 class="display-2 font-weight-bolder text-dark mb-4">Organ-IMAC</h1>
+        <p class="lead text-muted fs-4">
+          Organ-IMAC est une plateforme dédiée à la gestion des événements pour
+          les étudiants de l'IMAC.
+          <br />
+          <strong>Créez, gérez et participez</strong>
+          à des événements en un clic.
+        </p>
+      </div>
+
+      <!-- Card avec les boutons -->
+      <div class="card shadow-lg p-5 border-0">
+        <div class="card-body">
+          <h3 class="text-dark mb-4">Rejoignez-nous dès maintenant !</h3>
+          <p class="text-muted mb-5 fs-5">
+            Pour accéder à toutes les fonctionnalités, vous devez avoir un
+            compte.
+          </p>
+          <div
+            class="d-flex flex-column flex-sm-row justify-content-center gap-4"
+          >
+            <a href="/login" class="btn bg-gradient-dark px-5 py-3 fs-5">
+              Connexion
+            </a>
+            <a href="/register" class="btn bg-gradient-info px-5 py-3 fs-5">
+              Créer un compte
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

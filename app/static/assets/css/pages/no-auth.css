@@ -1,0 +1,18 @@
+.vh-80 {
+  min-height: 80vh !important;
+}
+.display-2 {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #1e293b !important;
+}
+.lead {
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+.card {
+  border-radius: 1rem;
+  border: none;
+  max-width: 800px;
+  margin: 0 auto;
+}

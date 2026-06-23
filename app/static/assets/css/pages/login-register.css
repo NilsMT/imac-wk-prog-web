@@ -1,0 +1,15 @@
+.vh-80 {
+  min-height: 80vh !important;
+}
+.card {
+  border-radius: 1rem;
+  border: none;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.fs-5 {
+  font-size: 1.1rem;
+}
+.fs-6 {
+  font-size: 1rem;
+}

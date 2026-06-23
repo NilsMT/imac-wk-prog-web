@@ -7,32 +7,47 @@ import sys, os
 sys.path.insert(0, os.path.dirname(__file__))
 
 #import
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, session
 import crypto
 import database
+import secrets
 
 #services
-import service.example
 import service.auth
+import model.auth
 import service.user
 
 app = Flask(__name__)
+app.secret_key = secrets.token_hex(32)
 
 #############################
 #pages routes
 #############################
 
+#routes
 @app.route("/")
 def index():
-    return render_template("index.html")
+    user = session.get("user")
+    if user:
+        return render_template("pages/dashboard.html", current_user=user)
+    else :
+        return render_template("pages/no-auth.html")
 
-@app.route("/example") # exemple avec utilisation de service
-def example():
-    return render_template("example.html", author = service.example.getAuthors())
+@app.route("/login")
+def login():
+    user = session.get("user")
+    if user:
+        return render_template("pages/dashboard.html", current_user=user)
+    else :
+        return render_template("pages/login.html")
 
-@app.route("/auth_test") # test auth
-def auth_test():
-    return render_template("auth_test.html")
+@app.route("/register")
+def register():
+    user = session.get("user")
+    if user:
+        return render_template("pages/dashboard.html", current_user=user)
+    else :
+        return render_template("pages/register.html")
 
 #############################
 #auth routes
@@ -50,10 +65,13 @@ def loginUser():
     except:
         return jsonify({"message" : "Login failure : request malformed/incomplete"}),400
     
-    status = service.auth.tryToLogin(email,password)
+    user, status = service.auth.tryToLogin(email,password)
     
     match status:
         case 0:
+            user = dict(user)
+            user.pop("password", None)
+            session["user"] = user
             return jsonify({"message" : "Login success"}),200
         case 1:
             return jsonify({"message" : "Login failure : wrong credential"}),401
@@ -63,9 +81,10 @@ def loginUser():
             return jsonify({"message" : "Login failure : unknown returned status"}),500
 
 #disconnect
-@app.route("/user/logout", methods=['GET'])
+@app.route("/user/logout", methods=['DELETE'])
 def logoutUser():
-    pass #TODO: handle logout
+    session.pop("user", None)
+    return jsonify({"message" : "Logout success"}),200
 
 #############################
 #user routes
@@ -78,7 +97,7 @@ def registerUser():
 
     try:
         email = request.form["email"]
-        password = request.form["password"] #NOTE: should be pre-hashed by the form ?
+        password = request.form["password"]
         name = request.form["name"]
         firstname = request.form["firstname"]
         promo = request.form["promo"]
@@ -90,6 +109,9 @@ def registerUser():
 
     match status:
         case 0:
+            user = dict(model.auth.getUserFromEmail(email))
+            user.pop("password", None)
+            session["user"] = user
             return jsonify({"message" : "Register success"}),200
         case 1:
             return jsonify({"message" : "Register failure : user with that email already exist"}),409

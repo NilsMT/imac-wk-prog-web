@@ -1,0 +1,151 @@
+{% extends "base.html" %} {% block title %}Inscription - Organ-IMAC{% endblock
+%}{% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='assets/css/pages/login-register.css') }}"
+/>
+{% endblock %} {% block content %}
+<div
+  class="container-fluid vh-80 d-flex align-items-center justify-content-center"
+>
+  <div class="row justify-content-center w-100">
+    <div class="col-lg-7 col-md-9">
+      <div class="card z-index-0 fadeIn3 fadeInBottom shadow-lg">
+        <div class="card-header text-center pt-5 pb-0">
+          <h3 class="font-weight-bolder text-dark">Créer un compte</h3>
+          <p class="mb-0 text-muted fs-5">
+            Remplissez le formulaire pour vous inscrire
+          </p>
+        </div>
+        <div class="card-body p-4">
+          <form id="registerForm" role="form">
+            <div
+              class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-4"
+            >
+              <div id="firstnameGroup" class="col-md-5">
+                <div class="input-group input-group-outline">
+                  <label for="firstname" class="form-label">
+                    Prénom
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="firstname"
+                    name="firstname"
+                    aria-label="Prénom"
+                    required
+                  />
+                </div>
+              </div>
+              <div id="nameGroup" class="col-md-5">
+                <div class="input-group input-group-outline">
+                  <label for="name" class="form-label">
+                    Nom
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    aria-label="Nom"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div id="pseudoGroup" class="mb-4">
+              <div class="input-group input-group-outline my-3">
+                <label for="pseudo" class="form-label">
+                  Pseudo
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="pseudo"
+                  name="pseudo"
+                  aria-label="Pseudo"
+                  required
+                />
+              </div>
+            </div>
+
+            <div id="emailGroup" class="mb-4">
+              <div class="input-group input-group-outline my-3">
+                <label for="email" class="form-label">
+                  Email
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  aria-label="Email"
+                  required
+                />
+              </div>
+            </div>
+
+            <div id="passwordGroup" class="mb-4">
+              <div class="input-group input-group-outline my-3">
+                <label for="password" class="form-label">
+                  Mot de passe
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  aria-label="Password"
+                  required
+                />
+              </div>
+            </div>
+
+            <div id="promoGroup" class="mb-4">
+              <div class="input-group input-group-outline my-3">
+                <label for="promo" class="form-label">
+                  Promotion
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="promo"
+                  name="promo"
+                  aria-label="Promotion"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button
+                type="submit"
+                class="btn bg-gradient-dark w-100 my-4 py-3 fs-5"
+                id="submitButton"
+              >
+                S'inscrire
+              </button>
+            </div>
+
+            <p class="text-muted text-center fs-6">
+              Déjà un compte ?
+              <a href="/login" class="text-dark text-gradient font-weight-bold">
+                Se connecter
+              </a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='assets/js/services/register.js') }}"></script>
+{% endblock %}

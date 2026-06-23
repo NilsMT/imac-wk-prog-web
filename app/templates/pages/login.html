@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block title %}Connexion - Organ-IMAC{% endblock %}
+{% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='assets/css/pages/login-register.css') }}"
+/>
+{% endblock %} {% block content %}
+<div
+  class="container-fluid vh-80 d-flex align-items-center justify-content-center"
+>
+  <div class="row justify-content-center w-100">
+    <div class="col-lg-6 col-md-8">
+      <div class="card z-index-0 fadeIn3 fadeInBottom shadow-lg">
+        <div class="card-header text-center pt-5 pb-0">
+          <h3 class="font-weight-bolder text-dark">Connexion</h3>
+          <p class="mb-0 text-muted fs-5">Entrez vos identifiants</p>
+        </div>
+        <div class="card-body p-4">
+          <form id="loginForm" role="form">
+            <div
+              id="emailGroup"
+              class="input-group input-group-outline my-3 mb-4"
+            >
+              <label for="email" class="form-label">
+                Email
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                aria-label="Email"
+                required
+              />
+            </div>
+            <div
+              id="passwordGroup"
+              class="input-group input-group-outline my-3 mb-4"
+            >
+              <label for="password" class="form-label">
+                Mot de passe
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                aria-label="Password"
+                required
+              />
+            </div>
+            <div class="text-center">
+              <button
+                type="submit"
+                class="btn bg-gradient-dark w-100 my-4 py-3 fs-5"
+              >
+                Se connecter
+              </button>
+            </div>
+            <p class="text-muted text-center fs-6">
+              Pas encore de compte ?
+              <a
+                href="/register"
+                class="text-dark text-gradient font-weight-bold"
+              >
+                S'inscrire
+              </a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='assets/js/services/login.js') }}"></script>
+{% endblock %}

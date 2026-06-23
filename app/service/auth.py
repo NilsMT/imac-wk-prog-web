@@ -20,6 +20,6 @@ def tryToLogin(email,password):
             password
         )
 
-        return int(not is_valid)
+        return user, int(not is_valid)
     else:
-        return 2
+        return None, 2
