@@ -32,4 +32,4 @@ def deleteUser(email):
 
     qr = model.user.deleteUser(email)
     print(qr)
-    return int(qr != 1)
+    return 0 if qr == 1 else 1
