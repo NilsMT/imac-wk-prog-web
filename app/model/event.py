@@ -1,9 +1,6 @@
 #import
 from database import query_db, get_db
-from datetime import datetime
-# Found on : https://pytutorial.com/python-datetime-to-string-guide/
-def getCurrentTime():
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+from utils import getCurrentTime
 
 # SELECT
 def getAllEvents():

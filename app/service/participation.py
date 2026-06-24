@@ -9,10 +9,11 @@ def addParticipation(id_user, id_event):
         Return:
         >>> 0 if success
         >>> 1 if participation already exists
+        >>> 2 unknown error
     """
     try:
-        model.participation.addParticipation(id_user, id_event)
-        return 0
+        qr = model.participation.addParticipation(id_user, id_event)
+        return 0 if qr == 1 else 2
     except sqlite3.IntegrityError:
         return 1
 
@@ -26,4 +27,4 @@ def removeParticipation(id_user, id_event):
     """
     qr = model.participation.removeParticipation(id_user, id_event)
 
-    return int(qr != 1)
+    return 0 if qr == 1 else 1
