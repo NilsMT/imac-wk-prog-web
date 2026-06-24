@@ -1,0 +1,30 @@
+<tr>
+  <td class="align-middle">
+    <span class="text-secondary font-weight-bold">{{ event.name }}</span>
+  </td>
+  <td class="align-middle">
+    <span class="text-secondary font-weight-normal">
+      {{ event.start_date[8:10] }}/{{ event.start_date[5:7] }}/{{
+      event.start_date[0:4] }}
+    </span>
+    <span class="text-secondary font-weight-normal ps-2">
+      ({{ (event.start_date[11:16]).replace(":", "h") }})
+    </span>
+  </td>
+  <td class="align-middle">
+    <span class="text-secondary font-weight-normal">{{ event.location }}</span>
+  </td>
+  <td class="align-middle text-right text-xs">
+    <a
+      href="javascript:;"
+      class="text-secondary font-weight-normal material-symbols-rounded"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="Voir l'événement"
+      data-container="body"
+      data-animation="true"
+    >
+      eye_tracking
+    </a>
+  </td>
+</tr>

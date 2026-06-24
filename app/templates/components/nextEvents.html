@@ -1,0 +1,36 @@
+<div class="card-body">
+  <div class="table-responsive">
+    <table class="table align-items-center mb-0">
+      <thead>
+        <tr>
+          <th
+            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+          >
+            Nom
+          </th>
+          <th
+            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+          >
+            Date début
+          </th>
+          <th
+            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+          >
+            Lieu
+          </th>
+          <th class="text-secondary opacity-7 ps-2"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if events|length == 0 %}
+        <tr>
+          <td colspan="4" class="text-center text-secondary">
+            Aucun événement disponible.
+          </td>
+        </tr>
+        {% else %} {% for event in events %} {% include
+        'components/nextEventsRow.html' %} {% endfor %} {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>

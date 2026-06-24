@@ -7,16 +7,20 @@ def getCurrentTime():
 
 # SELECT
 def getAllEvents():
-    return query_db("SELECT *, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event GROUP BY EVENT.id_event")
+    return query_db("SELECT EVENT.*, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT LEFT JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event GROUP BY EVENT.id_event")
 
 def getAllNextEvents():
-    return query_db("SELECT *, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE start_date > ? GROUP BY EVENT.id_event ORDER BY (start_date) ASC", [getCurrentTime()])
+    print(getCurrentTime())
+    return query_db("SELECT EVENT.*, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT LEFT JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE start_date > ? GROUP BY EVENT.id_event ORDER BY (start_date) ASC", [getCurrentTime()])
 
 def getNextEvent(id_user):
-    return query_db("SELECT *, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE start_date > ? AND PARTICIPATION.id_user == ? GROUP BY EVENT.id_event ORDER BY (start_date) ASC", [getCurrentTime(), id_user], True)
+    return query_db("SELECT EVENT.*, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT LEFT JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE start_date > ? AND PARTICIPATION.id_user == ? GROUP BY EVENT.id_event ORDER BY (start_date) ASC", [getCurrentTime(), id_user], True)
 
 def getMyEvents(id_user):
-    return query_db("SELECT *, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE EVENT.id_user = ? GROUP BY EVENT.id_event", [id_user])
+    return query_db("SELECT EVENT.*, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT LEFT JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE EVENT.id_user = ? GROUP BY EVENT.id_event", [id_user])
+
+def getAttributes(id_event):
+    return query_db("SELECT * FROM ATTRIBUTE WHERE id_event = ?", [id_event])
 
 # DELETE (only if the user is the owner of the event)
 def deleteEvent(id_event, id_user):
@@ -24,13 +28,13 @@ def deleteEvent(id_event, id_user):
     query_db("DELETE FROM ATTRIBUTE WHERE id_event = ?", [id_event])
 
 # INSERT
-def insertEvent(data_event, id_user):
+def insertEvent(data_event, id_user, image_url):
     col = ["name", "start_date", "end_date", "location", "id_user"]
     val = [data_event["name"], data_event["start_date"], data_event["end_date"], data_event["location"], id_user]
 
     if "image" in data_event:
         col.append("image")
-        val.append(data_event["image"])
+        val.append(image_url)
 
     if "description" in data_event:
         col.append("description")
@@ -46,6 +50,9 @@ def insertEvent(data_event, id_user):
         for attribute in data_event["attributes"]:
             att_query = "INSERT INTO ATTRIBUTE (id_event, type, name, value) VALUES (?, ?, ?, ?)"
             cursor.execute(att_query, (id_event, attribute["type"], attribute["name"], attribute["value"]))
+
+    participation_query = "INSERT INTO PARTICIPATION (id_event, id_user) VALUES (?, ?)"
+    cursor.execute(participation_query, (id_event, id_user))
 
     get_db().commit()
     return id_event

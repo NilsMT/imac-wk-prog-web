@@ -11,6 +11,16 @@ import database
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
 
+UPLOAD_FOLDER = os.path.join('app', 'static', 'uploads')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+MAX_FILE_SIZE = 16 * 1024 * 1024  # 16 Mo
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = MAX_FILE_SIZE
+app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 #############################
 #routes
 #############################

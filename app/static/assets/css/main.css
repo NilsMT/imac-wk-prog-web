@@ -1,3 +1,7 @@
 .sidenav {
   z-index: 1000 !important;
 }
+
+.vh-80 {
+  min-height: 80vh !important;
+}
