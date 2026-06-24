@@ -32,7 +32,7 @@ def register():
 @page_bp.route("/myEvents")
 def my_events():
     user = session.get("user")
-    events = service.event.getMyEvents(user["id_user"]) if user else []
+    events = service.event.getMyEvents(user["id_user"])[0]
     if user:
         return render_template("pages/myEvents.html", current_user=user, events=events)
     else :
