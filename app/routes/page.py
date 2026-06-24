@@ -19,7 +19,9 @@ def login():
     user = session.get("user")
     if user:
         return render_template("pages/dashboard.html", current_user=user)
-    else :
+    elif user["active"] == 0:
+        return render_template("pages/register.html")
+    else:
         return render_template("pages/login.html")
 
 @page_bp.route("/register")
