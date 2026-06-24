@@ -5,7 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     toggleActiveButtons.forEach((button) => {
         button.addEventListener("click", async function () {
-            const [, userId, active] = this.id.split("-");
+            const parts = this.id.split("-");
+            const userId = parts.slice(1, -1).join("-");
+            const admin = parts[parts.length - 1];
             console.log(
                 `Toggling active for user ID: ${userId}, current state: ${active}`,
             );
