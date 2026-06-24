@@ -200,6 +200,78 @@ def removeParticipation():
         case _:
             return jsonify({"message": "Removal failure : unknown returned status"}), 500
 
+############################
+# event routes
+############################
+import service.event
+
+#create event
+@app.route("/event", methods=['POST'])
+def createEvent():
+    user = session.get("user")
+    data_event = request.form
+
+    messsage, status = service.event.createEvent(data_event, user["id_user"])
+    return jsonify({"message" : messsage}), status
+
+#delete event
+@app.route("/event/<int:id_event>", methods=['DELETE'])
+def deleteEvent(id_event):
+    user = session.get("user")
+
+    messsage, status = service.event.deleteEvent(id_event, user["id_user"])
+    return jsonify({"message" : messsage}), status
+
+#update event
+@app.route("/event/<int:id_event>", methods=['PUT'])
+def updateEvent(id_event):
+    user = session.get("user")
+    data_event = request.form
+
+    messsage, status = service.event.updateEvent(data_event, id_event, user["id_user"])
+    return jsonify({"message" : messsage}), status
+
+# get events
+@app.route("/event/all", methods=['GET'])
+def getAllEvents():
+    objects, status = service.event.getAllEvents()
+    match status:
+        case 200:
+            return jsonify(objects), status
+        case _:
+            return jsonify(objects), 500
+
+@app.route("/event/allNext", methods=['GET'])
+def getAllNextEvents():
+    objects, status = service.event.getAllNextEvents()
+    match status:
+        case 200:
+            return jsonify(objects), status
+        case _:
+            return jsonify(objects), 500
+
+@app.route("/event/myNext", methods=['GET'])
+def getNextEvent():
+    user = session.get("user")
+
+    objects, status = service.event.getNextEvent(user["id_user"])
+    match status:
+        case 200:
+            return jsonify(objects), status
+        case _:
+            return jsonify(objects), 500
+
+@app.route("/event/myEvents", methods=['GET'])
+def getMyEvents():
+    user = session.get("user")
+
+    objects, status = service.event.getMyEvents(user["id_user"])
+    match status:
+        case 200:
+            return jsonify(objects), status
+        case _:
+            return jsonify(objects), 500
+
 #############################
 #special behaviors
 #############################
