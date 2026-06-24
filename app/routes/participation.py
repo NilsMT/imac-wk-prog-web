@@ -4,7 +4,7 @@ import service.participation
 participation_bp = Blueprint("participation", __name__)
 
 #add participation
-@participation_bp.route("/participation/add", methods=['POST'])
+@participation_bp.route("/api/v1/participations", methods=['POST'])
 def addParticipation():
     id_event = ""
 
@@ -31,7 +31,7 @@ def addParticipation():
             return jsonify({"message": "Participation failure : unknown returned status"}), 500
 
 #remove participation
-@participation_bp.route("/participation/remove", methods=['DELETE'])
+@participation_bp.route("/api/v1/participations", methods=['DELETE'])
 def removeParticipation():
     id_event = ""
 

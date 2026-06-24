@@ -5,7 +5,7 @@ import model.auth
 user_bp = Blueprint("user", __name__)
 
 #register account
-@user_bp.route("/user/register", methods=['POST'])
+@user_bp.route("/api/v1/users", methods=['POST'])
 def registerUser():
     email = password = name = firstname = promo = pseudo = ""
 
@@ -35,25 +35,3 @@ def registerUser():
             return jsonify({"message" : "Register failure : user with that pseudo already exist"}),409
         case _:
             return jsonify({"message" : "Register failure : unknown returned status"}),500
-        
-#delete account
-@user_bp.route("/user/delete", methods=['DELETE'])
-def deleteUser():
-    email = ""
-
-    #form data retrieval
-    try:
-        email = request.form["email"]
-    except:
-        return jsonify({"message" : "Register failure : request malformed/incomplete"}),400
-    
-    status = service.user.deleteUser(email)
-
-    #status handling
-    match status:
-        case 0:
-            return jsonify({"message" : "Deletion success"}),200
-        case 1:
-            return jsonify({"message" : "Deletion failure : user doesn't exist"}),404
-        case _:
-            return jsonify({"message" : "Deletion failure : unknown returned status"}),500
