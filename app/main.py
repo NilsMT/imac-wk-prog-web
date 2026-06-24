@@ -21,12 +21,16 @@ from routes.auth import auth_bp
 from routes.user import user_bp
 from routes.participation import participation_bp
 from routes.event import event_bp
+from routes.admin import admin_bp
+from routes.comment import comment_bp
 
 app.register_blueprint(page_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(participation_bp)
 app.register_blueprint(event_bp)
+app.register_blueprint(admin_bp)
+app.register_blueprint(comment_bp)
 
 #############################
 #special behavior
