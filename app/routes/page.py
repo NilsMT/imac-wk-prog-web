@@ -7,7 +7,7 @@ def index():
     user = session.get("user")
     if user:
         return render_template("pages/dashboard.html", current_user=user)
-    else:
+    else :
         return render_template("pages/no-auth.html")
 
 @page_bp.route("/login")
@@ -15,7 +15,7 @@ def login():
     user = session.get("user")
     if user:
         return render_template("pages/dashboard.html", current_user=user)
-    else:
+    else :
         return render_template("pages/login.html")
 
 @page_bp.route("/register")
@@ -23,5 +23,5 @@ def register():
     user = session.get("user")
     if user:
         return render_template("pages/dashboard.html", current_user=user)
-    else:
+    else :
         return render_template("pages/register.html")

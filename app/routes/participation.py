@@ -3,12 +3,17 @@ import service.participation
 
 participation_bp = Blueprint("participation", __name__)
 
+#add participation
 @participation_bp.route("/participation/add", methods=['POST'])
 def addParticipation():
+    id_event = ""
+
+    #session retrieval
     user = session.get("user")
     if not user:
         return jsonify({"message": "Participation failure : not logged in"}), 401
-
+    
+    #form data retrieval
     try:
         id_event = request.form["id_event"]
     except:
@@ -16,6 +21,7 @@ def addParticipation():
 
     status = service.participation.addParticipation(user["id_user"], id_event)
 
+    #status handling
     match status:
         case 0:
             return jsonify({"message": "Participation added successfully"}), 200
@@ -24,12 +30,17 @@ def addParticipation():
         case _:
             return jsonify({"message": "Participation failure : unknown returned status"}), 500
 
+#remove participation
 @participation_bp.route("/participation/remove", methods=['DELETE'])
 def removeParticipation():
+    id_event = ""
+
+    #session retrieval
     user = session.get("user")
     if not user:
         return jsonify({"message": "Removal failure : not logged in"}), 401
 
+    #form data retrieval
     try:
         id_event = request.form["id_event"]
     except:
@@ -37,6 +48,7 @@ def removeParticipation():
 
     status = service.participation.removeParticipation(user["id_user"], id_event)
 
+    #status handling
     match status:
         case 0:
             return jsonify({"message": "Participation removed successfully"}), 200
