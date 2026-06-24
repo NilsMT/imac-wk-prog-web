@@ -2,17 +2,18 @@
 from database import query_db
 from datetime import datetime
 # Found on : https://pytutorial.com/python-datetime-to-string-guide/
-currentTime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def getCurrentTime():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # SELECT
 def getAllEvents():
     return query_db("SELECT * FROM EVENT")
 
 def getAllNextEvents():
-    return query_db("SELECT * FROM EVENT WHERE start_date > ? ORDER BY (start_date) ASC", [currentTime])
+    return query_db("SELECT * FROM EVENT WHERE start_date > ? ORDER BY (start_date) ASC", [getCurrentTime()])
 
 def getNextEvent(id_user):
-    return query_db("SELECT * FROM EVENT E JOIN PARTICIPATION P ON E.id_event = P.id_event WHERE P.id_user = ? AND start_date > ? ORDER BY (start_date) ASC", [id_user, currentTime], True)
+    return query_db("SELECT * FROM EVENT E JOIN PARTICIPATION P ON E.id_event = P.id_event WHERE P.id_user = ? AND start_date > ? ORDER BY (start_date) ASC", [id_user, getCurrentTime()], True)
 
 # Verify if user is creator
 def getMyEvents(id_user):
