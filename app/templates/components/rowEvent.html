@@ -1,0 +1,61 @@
+<!-- https://getbootstrap.com/docs/5.0/components/ -->
+<tr>
+    <!-- Nom -->
+  <td>
+    <h6 class="mb-0 text-xs">{{ event.name }}</h6>
+  </td>
+  <!-- Participants -->
+  <td class="align-middle text-sm">
+    <span class="badge rounded-pill bg-light text-dark d-inline-flex align-items-center ">
+      <i class="material-symbols-rounded me-2 text-xs text-dark">group</i>
+      <span>{{ event.nb_participants }} participant{{ "s" if
+        event.nb_participants != 1 else "" }}</span>
+    </span>
+  </td>
+<!-- Date de dbt -->
+  <td class="align-middle">
+    <span class="text-xs font-weight-normal">
+      {{ event.start_date }}
+    </span>
+  </td>
+<!-- Date de fin -->
+  <td class="align-middle">
+    <span class="text-xs font-weight-normal">
+      {{ event.end_date }}
+    </span>
+  </td>
+<!-- Lieu -->
+  <td class="align-middle">
+    <span class="text-xs font-weight-normal">
+      {{ event.location }}
+    </span>
+</td>
+<!-- Actions -->
+  <td class="align-middle text-center">
+    <div class="d-flex justify-content-evenly">
+        <a
+          href="javascript:;"
+          class="text-secondary text-sm font-weight-normal material-symbols-rounded"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Voir l'événement"
+          data-container="body"
+          data-animation="true"
+        >
+          eye_tracking
+        </a>
+        <a
+          href="javascript:;"
+          class="text-secondary text-sm font-weight-normal material-symbols-rounded"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Modifier l'événement"
+          data-container="body"
+          data-animation="true"
+        >
+          edit
+        </a>
+    </div>
+  </td>
+
+</tr>
