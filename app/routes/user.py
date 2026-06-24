@@ -4,6 +4,41 @@ import model.auth
 
 user_bp = Blueprint("user", __name__)
 
+#update account
+@user_bp.route("/api/v1/users", methods=['PUT'])
+def updateUser():
+    email = password = name = firstname = promo = pseudo = ""
+
+    #session retrieval
+    user = session.get("user")
+    if not user:
+        return jsonify({"message": "Removal failure : not logged in"}), 401
+    
+    #form data retrieval
+    try:
+        data = request.get_json()
+        email = data.get("email")
+        password = data.get("password")
+        name = data.get("name")
+        firstname = data.get("firstname")
+        promo = data.get("promo")
+        pseudo = data.get("pseudo")
+    except:
+        return jsonify({"message" : "Update failure : request malformed/incomplete"}),400
+    
+    status = service.user.updateUser(email, password, name, firstname, promo, pseudo, user["user_id"])
+
+    #status handling
+    match status:
+        case 0:
+            return jsonify({"message" : "Update success"}),200
+        case 1:
+            return jsonify({"message" : "Update failure : user with that email already exist"}),409
+        case 2:
+            return jsonify({"message" : "Update failure : user with that pseudo already exist"}),409
+        case _:
+            return jsonify({"message" : "Update failure : unknown returned status"}),500
+
 #register account
 @user_bp.route("/api/v1/users", methods=['POST'])
 def registerUser():
