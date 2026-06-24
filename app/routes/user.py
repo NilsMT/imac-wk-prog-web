@@ -5,7 +5,7 @@ import model.auth
 user_bp = Blueprint("user", __name__)
 
 #register account
-@user_bp.route("/users", methods=['POST'])
+@user_bp.route("/api/v1/users", methods=['POST'])
 def registerUser():
     email = password = name = firstname = promo = pseudo = ""
 

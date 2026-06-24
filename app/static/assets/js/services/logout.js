@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const logoutButton = document.getElementById("logoutButton");
         logoutButton.addEventListener("click", async function () {
             try {
-                const response = await fetch("/session", {
+                const response = await fetch("/api/v1/session", {
                     method: "DELETE",
                 });
 

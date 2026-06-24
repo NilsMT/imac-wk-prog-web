@@ -4,7 +4,7 @@ import service.admin
 admin_bp = Blueprint("admin", __name__)
 
 #get users list
-@admin_bp.route("/admin/users", methods=['GET'])
+@admin_bp.route("/api/v1/admin/users", methods=['GET'])
 def getUsers():
 
     #session retrieval
@@ -18,7 +18,7 @@ def getUsers():
     return jsonify(users), 200
 
 #update user
-@admin_bp.route("/admin/users/<id_user>", methods=['PUT'])
+@admin_bp.route("/api/v1/admin/users/<id_user>", methods=['PUT'])
 def updateUser(id_user):
 
     #session retrieval

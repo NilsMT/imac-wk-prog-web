@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isFormValid) {
             const formData = new FormData(loginForm);
 
-            const response = await fetch("/session", {
+            const response = await fetch("/api/v1/session", {
                 method: "POST",
                 body: formData,
             });

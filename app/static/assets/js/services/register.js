@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isFormValid) {
             const formData = new FormData(registerForm);
 
-            const response = await fetch("/users", {
+            const response = await fetch("/api/v1/users", {
                 method: "POST",
                 body: formData,
             });

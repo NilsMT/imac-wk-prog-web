@@ -4,7 +4,7 @@ import service.auth
 auth_bp = Blueprint("auth", __name__)
 
 #login
-@auth_bp.route("/session", methods=['POST'])
+@auth_bp.route("/api/v1/session", methods=['POST'])
 def loginUser():
     email = password = ""
 
@@ -32,7 +32,7 @@ def loginUser():
             return jsonify({"message" : "Login failure : unknown returned status"}),500
 
 #disconnect
-@auth_bp.route("/session", methods=['DELETE'])
+@auth_bp.route("/api/v1/session", methods=['DELETE'])
 def logoutUser():
     session.pop("user", None)
     return jsonify({"message" : "Logout success"}),200

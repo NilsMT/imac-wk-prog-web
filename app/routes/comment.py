@@ -4,7 +4,7 @@ from utils import getCurrentTime
 
 comment_bp = Blueprint("comment", __name__)
 
-@comment_bp.route("/comments", methods=['GET'])
+@comment_bp.route("/api/v1/comments", methods=['GET'])
 def getCommentsOnEvent():
     id_event = ""
 
@@ -18,7 +18,7 @@ def getCommentsOnEvent():
     return jsonify(comments),200
            
 
-@comment_bp.route("/comments", methods=['POST'])
+@comment_bp.route("/api/v1/comments", methods=['POST'])
 def addComment():
     id_event = message = ""
     comment_time = getCurrentTime()
