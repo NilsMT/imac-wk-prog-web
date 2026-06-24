@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener("click", async function () {
             const parts = this.id.split("-");
             const userId = parts.slice(1, -1).join("-");
-            const admin = parts[parts.length - 1];
+            const active = parts[parts.length - 1];
             console.log(
                 `Toggling active for user ID: ${userId}, current state: ${active}`,
             );
