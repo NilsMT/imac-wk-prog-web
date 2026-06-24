@@ -33,4 +33,7 @@ endblock %} {% block content %}
   </div>
 </div>
 {% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='/assets/js/services/deleteEvent.js') }}"></script>
+{% endblock %}
 

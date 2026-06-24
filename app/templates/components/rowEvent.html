@@ -31,31 +31,31 @@
     </span>
 </td>
 <!-- Actions -->
-  <td class="align-middle text-center">
-    <div class="d-flex justify-content-evenly">
-        <a
-          href="javascript:;"
-          class="text-secondary text-sm font-weight-normal material-symbols-rounded"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title="Voir l'événement"
-          data-container="body"
-          data-animation="true"
-        >
-          eye_tracking
-        </a>
-        <a
-          href="javascript:;"
-          class="text-secondary text-sm font-weight-normal material-symbols-rounded"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title="Modifier l'événement"
-          data-container="body"
-          data-animation="true"
-        >
-          edit
-        </a>
+<td class="align-middle text-center">
+    <div class="d-flex justify-content-evenly gap-1">
+        <button
+            href="javascript:;"
+            class="btn btn-light btn-sm d-flex align-items-center"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Modifier l'événement"
+            data-container="body"
+            data-animation="true"
+            >
+                <span class="material-symbols-rounded text-secondary fs-6">edit</span>
+        </button>
+        <button
+            id="deleteEventButton-{{ event.id_event }}"
+            class="btn btn-light btn-sm d-flex align-items-center deleteEventButton"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Supprimer l'événement"
+            data-container="body"
+            data-animation="true"
+            >
+                <span class="material-symbols-rounded text-danger fs-6">delete</span>
+        </button>
     </div>
-  </td>
+</td>
 
 </tr>
