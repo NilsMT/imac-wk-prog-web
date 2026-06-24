@@ -1,5 +1,5 @@
 #import
-from database import query_db
+from database import query_db, get_db
 from datetime import datetime
 # Found on : https://pytutorial.com/python-datetime-to-string-guide/
 def getCurrentTime():
@@ -7,93 +7,71 @@ def getCurrentTime():
 
 # SELECT
 def getAllEvents():
-    return query_db("SELECT * FROM EVENT")
+    return query_db("SELECT *, COUNT DISTINCT(PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event GROUP BY EVENT.id_event")
 
 def getAllNextEvents():
-    return query_db("SELECT * FROM EVENT WHERE start_date > ? ORDER BY (start_date) ASC", [getCurrentTime()])
+    return query_db("SELECT *, COUNT DISTINCT(PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE start_date > ? GROUP BY EVENT.id_event ORDER BY (start_date) ASC", [getCurrentTime()])
 
 def getNextEvent(id_user):
-    return query_db("SELECT * FROM EVENT E JOIN PARTICIPATION P ON E.id_event = P.id_event WHERE P.id_user = ? AND start_date > ? ORDER BY (start_date) ASC", [id_user, getCurrentTime()], True)
+    return query_db("SELECT *, COUNT DISTINCT(PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE start_date > ? AND PARTICIPATION.id_user == ? GROUP BY EVENT.id_event ORDER BY (start_date) ASC", [getCurrentTime(), id_user], True)
 
-# Verify if user is creator
 def getMyEvents(id_user):
-    return query_db("SELECT * FROM EVENT WHERE EVENT.id_user = ?", [id_user])
+    return query_db("SELECT *, COUNT DISTINCT(PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE EVENT.id_user = ? GROUP BY EVENT.id_event", [id_user])
 
-# SORING
-# JSON : {"sort_1" : None, ASS ou DESC, "sort_2" : None, ASC ou DESC,...}
+# DELETE (only if the user is the owner of the event)
+def deleteEvent(id_event, id_user):
+    query_db("DELETE FROM EVENT WHERE id_event = ? AND id_user = ?", [id_event, id_user])
+    query_db("DELETE FROM ATTRIBUTE WHERE id_event = ?", [id_event])
 
-def getEventsSorted(name, start_date, end_date, location):
-    query = "SELECT * FROM EVENT"
-    if (name is None and start_date is None and end_date is None and location is None):
-        return query_db(query)
-    else:
-        query += " ORDER BY"
+# INSERT
+def insertEvent(data_event, id_user):
+    col = ["name", "start_date", "end_date", "location", "id_user"]
+    val = [data_event["name"], data_event["start_date"], data_event["end_date"], data_event["location"], id_user]
 
-        if(name is not None):
-            query += " name " + name + ","
-        if(start_date is not None):
-            query += " start_date " + start_date + ","
-        if(end_date is not None):
-            query += " end_date " + end_date + ","
-        if(location is not None):
-            query += " location " + location + ","
-    # Cut last ","
-    query = query[0:-1]
-    return query_db(query)
+    if "image" in data_event:
+        col.append("image")
+        val.append(data_event["image"])
 
-# Only if user is creator
-# DELETE event
-def deleteEvent(id_user, id_row):
-    return query_db("DELETE FROM EVENT WHERE id_event = ? AND id_user = ?", [id_row, id_user])
+    if "description" in data_event:
+        col.append("description")
+        val.append(data_event["description"])
 
-# INSERT to create an event
-# JSON : {"name" = ..., "start_date" = ...,..., "requis" = [{"entity" = ..., "attribute" = ..., "value" = ...}, {"entity" = ..., "attribute" = ..., "value" = ...}...]}
+    query = "INSERT INTO EVENT (" + ", ".join(col) + ") VALUES (" + ", ".join(["?"] * len(val)) + ")"
 
-def insertEvent(name, start_date, end_date, location, image, description, requis, id_user):
-    # Same way as sorting
-    query_begin = "INSERT INTO EVENT (name, start_date, end_date, location, id_user"
-    query_end = ") VALUES (?,?,?,?,?"
-    values = [name, start_date, end_date, location, id_user]
+    cursor =  get_db().cursor()
+    cursor.execute(query, val)
+    id_event = cursor.lastrowid
 
-    if(image is not None):
-        query_begin += ", image"
-        query_end += ',?'
-        values.append(image)
+    if "attributes" in data_event:
+        for attribute in data_event["attributes"]:
+            att_query = "INSERT INTO ATTRIBUTE (id_event, type, name, value) VALUES (?, ?, ?, ?)"
+            cursor.execute(att_query, (id_event, attribute["type"], attribute["name"], attribute["value"]))
 
-    if(description is not None):
-        query_begin += ", description"
-        query_end += ',?'
-        values.append(description)
-
-    # We create the event
-    query_db(query_begin + query_end + ")", values, True)
-    # For INSERT, query_db returns nb of rows affected (!= row like in SELECT)
-    # For ENTITY, we need the id_event : we use SELECT to get the row
-    id_event = query_db("SELECT id_event FROM EVENT WHERE name = ? AND start_date = ? AND id_user = ?", [name, start_date, id_user], True)["id_event"]
-    
-    if (requis is not None):
-        for eav in requis:
-            entity_type, attribut, value = eav["entity"], eav["attribute"], eav["value"]
-            # We create the entity
-            query_db("INSERT INTO ENTITY (type, id_event) VALUES (?,?)", [entity_type, id_event], True)
-            # To create the value, we need the entity id that we get from the row
-            id_entity = query_db("SELECT id_entity FROM ENTITY WHERE type = ? AND id_event = ?", [entity_type, id_event], True)["id_entity"]
-            # We create the value
-            query_db("INSERT INTO VALUE(id_attribut, id_entity, value) VALUES (?,?,?)", [attribut, id_entity, value])
+    get_db().commit()
     return id_event
 
-# UPDATE an event : everything is updated, even if no changes
-def updateEvent(name, start_date, end_date, location, image, description, requis, id_row):
-    query_db("UPDATE EVENT SET name = ?, start_date = ?, end_date = ?, location = ?, image = ?, description = ? WHERE id_event = ?", [name, start_date, end_date, location, image, description, id_row])
-    # Same as INSERT
-    id_event = id_row
-    if (requis is not None):
-        for eav in requis:
-            entity_type, attribut, value = eav["entity"], eav["attribute"], eav["value"]
-            # We create the entity
-            query_db("INSERT INTO ENTITY (type, id_event) VALUES (?,?)", [entity_type, id_event], True)
-            # To create the value, we need the entity id
-            id_entity = query_db("SELECT id_entity FROM ENTITY WHERE type = ? AND id_event = ?", [entity_type, id_event])
-            # We create the value
-            query_db("INSERT INTO VALUE(id_attribut, id_entity, value) VALUES (?,?,?)", [attribut, id_entity, value])
-    return id_event
+# UPDATE (only if the user is the owner of the event)
+def updateEvent(data_event, id_event, id_user):
+    updates = []
+    values = []
+
+    for key in ["name", "start_date", "end_date", "location", "image", "description"]:
+        if key in data_event:
+            updates.append(f"{key} = ?")
+            values.append(data_event[key])
+
+    query = "UPDATE EVENT SET " + ", ".join(updates) + " WHERE id_event = ? AND id_user = ?"
+    values.extend([id_event, id_user])
+
+    cursor = get_db().cursor()
+    cursor.execute(query, values)
+
+    cursor.execute("DELETE FROM ATTRIBUTE WHERE id_event = ?", (id_event,))
+
+    if "attributes" in data_event:
+        for attribute in data_event["attributes"]:
+            att_query = "INSERT INTO ATTRIBUTE (id_event, type, name, value) VALUES (?, ?, ?, ?)"
+            cursor.execute(att_query, (id_event, attribute["type"], attribute["name"], attribute["value"]))
+
+    get_db().commit()
+    return True

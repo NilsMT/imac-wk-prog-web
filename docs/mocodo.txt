@@ -8,7 +8,6 @@ EVENT: id_event, nom, date_dbt, date_fin, lieu, image, description
 
 ENTITES: id_entites, type
 
-AVOIR, 0N EVENT, 11 ENTITES
-VALEURS, 0N ATTRIBUTS, 0N ENTITES : valeur
+AVOIR, 0N EVENT, 11 ATTRIBUTS
 
-ATTRIBUTS: id_attribut, name, description, type
+ATTRIBUTS: id_attribut, name, type, value

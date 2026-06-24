@@ -16,6 +16,7 @@ import secrets
 import service.auth
 import model.auth
 import service.user
+import service.event
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
@@ -139,6 +140,76 @@ def deleteUser():
             return jsonify({"message" : "Deletion failure : user doesn't exist"}),404
         case _:
             return jsonify({"message" : "Deletion failure : unknown returned status"}),500
+
+############################
+# event routes
+############################
+#create event
+@app.route("/event", method=['POST'])
+def createEvent():
+    user = session.get("user")
+    data_event = request.form
+
+    messsage, status = service.event.createEvent(data_event, user["id_user"])
+    return jsonify({"message" : messsage}), status
+
+#delete event
+@app.route("/event/<int:id_event>", method=['DELETE'])
+def deleteEvent(id_event):
+    user = session.get("user")
+
+    messsage, status = service.event.deleteEvent(id_event, user["id_user"])
+    return jsonify({"message" : messsage}), status
+
+#update event
+@app.route("/event/<int:id_event>", method=['PUT'])
+def updateEvent(id_event):
+    user = session.get("user")
+    data_event = request.form
+
+    messsage, status = service.event.updateEvent(data_event, id_event, user["id_user"])
+    return jsonify({"message" : messsage}), status
+
+# get events
+@app.route("/event/all", method=['GET'])
+def getAllEvents():
+    objects, status = service.event.getAllEvents()
+    match status:
+        case 200:
+            return jsonify(objects), status
+        case _:
+            return jsonify(objects), 500
+
+@app.route("/event/allNext", method=['GET'])
+def getAllNextEvents():
+    objects, status = service.event.getAllNextEvents()
+    match status:
+        case 200:
+            return jsonify(objects), status
+        case _:
+            return jsonify(objects), 500
+
+@app.route("/event/myNext", method=['GET'])
+def getNextEvent():
+    user = session.get("user")
+
+    objects, status = service.event.getNextEvent(user["id_user"])
+    match status:
+        case 200:
+            return jsonify(objects), status
+        case _:
+            return jsonify(objects), 500
+
+@app.route("/event/myEvents", method=['GET'])
+def getMyEvents():
+    user = session.get("user")
+
+    objects, status = service.event.getMyEvents(user["id_user"])
+    match status:
+        case 200:
+            return jsonify(objects), status
+        case _:
+            return jsonify(objects), 500
 
 #############################
 #special behaviors
