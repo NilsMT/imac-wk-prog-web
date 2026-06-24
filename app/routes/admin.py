@@ -11,7 +11,7 @@ def getUsers():
     user = session.get("user")
     if not user:
         return jsonify({"message": "Admin failure : not logged in"}), 401
-    if not user.get("admin"):
+    if user["admin"] != 1:
         return jsonify({"message": "Admin failure : forbidden"}), 403
 
     users = service.admin.getUsers()
@@ -26,7 +26,7 @@ def setActive():
     user = session.get("user")
     if not user:
         return jsonify({"message": "Admin failure : not logged in"}), 401
-    if not user.get("admin"):
+    if user["admin"] != 1:
         return jsonify({"message": "Admin failure : forbidden"}), 403
 
     #form data retrieval
@@ -58,7 +58,7 @@ def setAdmin():
     user = session.get("user")
     if not user:
         return jsonify({"message": "Admin failure : not logged in"}), 401
-    if not user.get("admin"):
+    if user["admin"] != 1:
         return jsonify({"message": "Admin failure : forbidden"}), 403
 
     #form data retrieval
