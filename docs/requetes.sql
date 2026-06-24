@@ -42,25 +42,11 @@ CREATE TABLE COMMENT (
   FOREIGN KEY (id_user) REFERENCES USER (id_user)
 );
 
-CREATE TABLE ENTITY (
-  id_entity INTEGER PRIMARY KEY AUTOINCREMENT,
-  type       TEXT,
-  id_event   INTEGER NOT NULL,
-  FOREIGN KEY (id_event) REFERENCES EVENT (id_event)
-);
-
 CREATE TABLE ATTRIBUTE (
   id_attribute INTEGER PRIMARY KEY AUTOINCREMENT,
-  name        TEXT,
-  description TEXT,
-  type        TEXT
-);
-
-CREATE TABLE VALUE (
-  id_attribut INTEGER NOT NULL,
-  id_entity  INTEGER NOT NULL,
-  value   TEXT,
-  PRIMARY KEY (id_attribut, id_entity),
-  FOREIGN KEY (id_entity) REFERENCES ENTITY (id_entity),
-  FOREIGN KEY (id_attribut) REFERENCES ATTRIBUTE (id_attribut)
+  type      TEXT,
+  name      TEXT,
+  value     TEXT,
+  id_event   INTEGER NOT NULL,
+  FOREIGN KEY (id_event) REFERENCES EVENT (id_event)
 );
