@@ -15,16 +15,17 @@
     <span class="text-secondary font-weight-normal">{{ event.location }}</span>
   </td>
   <td class="align-middle text-right text-xs">
-    <a
-      id="viewEventButton-{{ event.id }}"
-      class="text-secondary font-weight-normal material-symbols-rounded viewEventButton"
-      data-bs-toggle="tooltip"
-      data-bs-placement="top"
+    <button
+      id="viewEventButton-{{ event.id_event }}"
+      class="btn btn-light btn-sm d-flex mb-0 align-items-center viewEventButton"
       title="Voir l'événement"
+      data-bs-toggle="modal"
+      data-bs-target="#modal"
+      data-event-id="{{ event.id_event }}"
       data-container="body"
       data-animation="true"
     >
-      eye_tracking
-    </a>
+      <span class="material-symbols-rounded text-info fs-6">eye_tracking</span>
+    </button>
   </td>
 </tr>

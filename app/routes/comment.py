@@ -4,33 +4,22 @@ from utils import getCurrentTime
 
 comment_bp = Blueprint("comment", __name__)
 
-@comment_bp.route("/api/v1/comments", methods=['GET'])
-def getCommentsOnEvent():
-    id_event = ""
-
-    #form data retrieval
-    try:
-        id_event = request.args["id_event"]
-    except:
-        return jsonify({"message" : "Comment retrieval failure : request malformed/incomplete"}),400
-    
+@comment_bp.route("/api/v1/comments/<int:id_event>", methods=['GET'])
+def getCommentsOnEvent(id_event):    
     comments = service.comment.getCommentsOnEvent(id_event)
-    return jsonify(comments),200
-           
+    return jsonify([dict(comment) for comment in comments]), 200
 
-@comment_bp.route("/api/v1/comments", methods=['POST'])
-def addComment():
-    id_event = message = ""
+
+@comment_bp.route("/api/v1/comments/<int:id_event>", methods=['POST'])
+def addComment(id_event):
+    message = ""
     comment_time = getCurrentTime()
 
-    #session retrieval
     user = session.get("user")
     if not user:
         return jsonify({"message": "Comment failure : not logged in"}), 401
     
-    #form data retrieval
     try:
-        id_event = request.form["id_event"]
         message = request.form["message"]
     except:
         return jsonify({"message" : "Comment failure : request malformed/incomplete"}),400

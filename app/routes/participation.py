@@ -3,25 +3,32 @@ import service.participation
 
 participation_bp = Blueprint("participation", __name__)
 
-#add participation
-@participation_bp.route("/api/v1/participations", methods=['POST'])
-def addParticipation():
-    id_event = ""
+#get participation
+@participation_bp.route("/api/v1/participations/<int:id_event>", methods=['GET'])
+def getParticipation(id_event):
+    user = session.get("user")
+    if not user:
+        return jsonify({"message": "Retrieval failure : not logged in"}), 401
 
-    #session retrieval
+    status, participation = service.participation.getParticipation(user["id_user"], id_event)
+    participe = dict(participation[0])
+    
+    match status:
+        case 0:
+            return jsonify({"message": "Participation retrieved successfully", "participe": participe["participation_exists"]}), 200
+        case _:
+            return jsonify({"message": "Retrieval failure : unknown returned status"}), 500
+
+#add participation
+@participation_bp.route("/api/v1/participations/<int:id_event>", methods=['POST'])
+def addParticipation(id_event):
+
     user = session.get("user")
     if not user:
         return jsonify({"message": "Participation failure : not logged in"}), 401
-    
-    #form data retrieval
-    try:
-        id_event = request.form["id_event"]
-    except:
-        return jsonify({"message": "Participation failure : request malformed/incomplete"}), 400
 
     status = service.participation.addParticipation(user["id_user"], id_event)
 
-    #status handling
     match status:
         case 0:
             return jsonify({"message": "Participation added successfully"}), 200
@@ -31,24 +38,14 @@ def addParticipation():
             return jsonify({"message": "Participation failure : unknown returned status"}), 500
 
 #remove participation
-@participation_bp.route("/api/v1/participations", methods=['DELETE'])
-def removeParticipation():
-    id_event = ""
-
-    #session retrieval
+@participation_bp.route("/api/v1/participations/<int:id_event>", methods=['DELETE'])
+def removeParticipation(id_event):
     user = session.get("user")
     if not user:
         return jsonify({"message": "Removal failure : not logged in"}), 401
 
-    #form data retrieval
-    try:
-        id_event = request.form["id_event"]
-    except:
-        return jsonify({"message": "Removal failure : request malformed/incomplete"}), 400
-
     status = service.participation.removeParticipation(user["id_user"], id_event)
 
-    #status handling
     match status:
         case 0:
             return jsonify({"message": "Participation removed successfully"}), 200

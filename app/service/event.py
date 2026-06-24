@@ -70,9 +70,7 @@ def getAllNextEvents() :
             attributes = model.event.getAttributes(event_dict["id_event"])
             attributes_list = [dict(attr) if hasattr(attr, 'keys') else attr for attr in attributes]
             event_dict["attributes"] = attributes_list
-            result.append(event_dict)
-
-        print("Result:", result)  # Debugging line to print the result  
+            result.append(event_dict) 
 
         return result, 200
     except sqlite3.IntegrityError as e:

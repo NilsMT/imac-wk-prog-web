@@ -84,8 +84,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const eventData = {
       name: formData.get("name"),
-      start_date: formData.get("start_date"),
-      end_date: formData.get("end_date"),
+      start_date: new Date(formData.get("start_date")),
+      end_date: new Date(formData.get("end_date")),
       location: formData.get("location"),
       description: formData.get("description"),
       attributes: attributes,
@@ -114,8 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Erreur de connexion au serveur : " + error.message);
     } finally {
       submitBtn.disabled = false;
-      submitText.textContent = "Créer l'événement";
-      submitSpinner.classList.add("d-none");
     }
   });
 });

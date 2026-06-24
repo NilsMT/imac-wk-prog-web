@@ -2,7 +2,7 @@
 <tr>
   <!-- Nom -->
   <td>
-    <h6 class="mb-0 text-xs">{{ event.name }}</h6>
+    <h6 class="mb-0 text-xs ps-2">{{ event.name }}</h6>
   </td>
   <!-- Participants -->
   <td class="align-middle text-sm">
@@ -18,11 +18,23 @@
   </td>
   <!-- Date de dbt -->
   <td class="align-middle">
-    <span class="text-xs font-weight-normal">{{ event.start_date }}</span>
+    <span class="text-xs font-weight-normal">
+      {{ event.start_date[8:10] }}/{{ event.start_date[5:7] }}/{{
+      event.start_date[0:4] }}
+    </span>
+    <span class="text-xs font-weight-normal ps-2">
+      ({{ (event.start_date[11:16]).replace(":", "h") }})
+    </span>
   </td>
   <!-- Date de fin -->
   <td class="align-middle">
-    <span class="text-xs font-weight-normal">{{ event.end_date }}</span>
+    <span class="text-xs font-weight-normal">
+      {{ event.end_date[8:10] }}/{{ event.end_date[5:7] }}/{{
+      event.end_date[0:4] }}
+    </span>
+    <span class="text-xs font-weight-normal ps-2">
+      ({{ (event.end_date[11:16]).replace(":", "h") }})
+    </span>
   </td>
   <!-- Lieu -->
   <td class="align-middle">

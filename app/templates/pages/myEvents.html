@@ -1,25 +1,48 @@
 {% extends "base.html" %} {% block title %}Mes événements - Organ-IMAC{%
-endblock %} {% block content %} 
+endblock %} {% block content %}
+<h1 class="mb-4">Mes événements</h1>
 <div class="container-fluid h-100">
-  <div class="container mt-5">
+  <div class="mt-5">
     <div class="card">
       <div class="table-responsive">
         <table class="table align-items-center mb-0" id="data-table">
           <thead>
             <tr>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nom</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nombre de participants</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date de début</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date de fin</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lieu</th>
-              <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Actions</th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3"
+              >
+                Nom
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Nombre de participants
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Date de début
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Date de fin
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Lieu
+              </th>
+              <th
+                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
-            {%if events|length != 0 %}
-            {% for event in events %} {% include 'components/rowEvent.html' %}
-            {% endfor %}
-            {% else %}
+            {%if events|length != 0 %} {% for event in events %} {% include
+            'components/rowEvent.html' %} {% endfor %} {% else %}
             <tr>
               <td colspan="7" class="text-center">
                 Vous n'avez pas d'événements à venir.
@@ -32,8 +55,6 @@ endblock %} {% block content %}
     </div>
   </div>
 </div>
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='/assets/js/services/deleteEvent.js') }}"></script>
 {% endblock %}
-
