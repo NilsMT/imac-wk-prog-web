@@ -11,5 +11,12 @@ def registerUser(email,password,name,firstname,promo,pseudo):
 
     return query_db("INSERT INTO USER VALUES(?,?,?,?,?,?,?,?,?)",[id_user,name,firstname,email,pseudo,promo,password,admin,active])
 
+def updateUser(email, password, name, firstname, promo, pseudo, user_id):
+    password = crypto.bcrypt.generate_password_hash(password, 10)
+    return query_db(
+        "UPDATE USER SET name=?, firstname=?, email=?, pseudo=?, promo=?, password=? WHERE id_user=?",
+        [name, firstname, email, pseudo, promo, password, user_id]
+    )
+
 def deleteUser(email):
     return query_db("DELETE FROM USER WHERE email=?",[email])

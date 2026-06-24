@@ -1,20 +1,16 @@
 from flask import Blueprint, render_template, session, abort
 import service.event
-import service.admin
+from decorator import login_required, active_required, admin_required
 
 page_bp = Blueprint("page", __name__)
 
 @page_bp.route("/")
+@active_required
 def index():
     user = session.get("user")
-    if user:
-        if user["active"] == 0:
-            return render_template("pages/no-auth.html")
-        next_event = service.event.getNextEvent(user["id_user"])[0]
-        events = service.event.getAllNextEvents()[0]
-        return render_template("pages/dashboard.html", current_user=user, next_event=next_event, events=events)
-    else:
-        return render_template("pages/no-auth.html")
+    next_event = service.event.getNextEvent(user["id_user"])[0]
+    events = service.event.getAllNextEvents()[0]
+    return render_template("pages/dashboard.html", current_user=user, next_event=next_event, events=events)
 
 @page_bp.route("/login")
 def login():
@@ -22,10 +18,8 @@ def login():
     if user:
         if user["active"] == 0:
             return render_template("pages/no-auth.html")
-        else:
-            return render_template("pages/dashboard.html", current_user=user)
-    else:
-        return render_template("pages/login.html")
+        return render_template("pages/dashboard.html", current_user=user)
+    return render_template("pages/login.html")
 
 @page_bp.route("/register")
 def register():
@@ -33,25 +27,22 @@ def register():
     if user:
         if user["active"] == 0:
             return render_template("pages/no-auth.html")
-        else:
-            return render_template("pages/dashboard.html", current_user=user)
-    else :
-        return render_template("pages/register.html")
+        return render_template("pages/dashboard.html", current_user=user)
+    return render_template("pages/register.html")
 
 @page_bp.route("/myEvents")
+@login_required
+@active_required
 def my_events():
     user = session.get("user")
     events = service.event.getMyEvents(user["id_user"])[0]
-    if user:
-        return render_template("pages/myEvents.html", current_user=user, events=events)
-    else :
-        return render_template("pages/no-auth.html")
-    
+    return render_template("pages/myEvents.html", current_user=user, events=events)
+
 @page_bp.route("/admin")
+@login_required
+@admin_required
 def admin():
     user = session.get("user")
-    if not user or user["admin"] != 1:
-        return abort(403)
     users = service.admin.getUsers(user["id_user"])
     return render_template("pages/admin.html", current_user=user, users=users)
 

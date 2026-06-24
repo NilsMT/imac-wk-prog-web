@@ -21,6 +21,25 @@ def registerUser(email,password,name,firstname,promo,pseudo):
             return 2
         raise
 
+def updateUser(email, password, name, firstname, promo, pseudo, user_id):
+    """
+        Try to update user info
+
+        Return:
+        >>> 0 if success
+        >>> 1 if user mail taken already
+        >>> 2 if user pseudo taken already
+    """
+    try:
+        model.user.updateUser(email, password, name, firstname, promo, pseudo, user_id)
+        return 0
+    except sqlite3.IntegrityError as e:
+        if "USER.email" in str(e):
+            return 1
+        if "USER.pseudo" in str(e):
+            return 2
+        raise
+
 def deleteUser(email):
     """
         Try to delete a user with the given `email`
