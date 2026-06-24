@@ -7,16 +7,16 @@ def getCurrentTime():
 
 # SELECT
 def getAllEvents():
-    return query_db("SELECT *, COUNT DISTINCT(PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event GROUP BY EVENT.id_event")
+    return query_db("SELECT *, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event GROUP BY EVENT.id_event")
 
 def getAllNextEvents():
-    return query_db("SELECT *, COUNT DISTINCT(PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE start_date > ? GROUP BY EVENT.id_event ORDER BY (start_date) ASC", [getCurrentTime()])
+    return query_db("SELECT *, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE start_date > ? GROUP BY EVENT.id_event ORDER BY (start_date) ASC", [getCurrentTime()])
 
 def getNextEvent(id_user):
-    return query_db("SELECT *, COUNT DISTINCT(PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE start_date > ? AND PARTICIPATION.id_user == ? GROUP BY EVENT.id_event ORDER BY (start_date) ASC", [getCurrentTime(), id_user], True)
+    return query_db("SELECT *, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE start_date > ? AND PARTICIPATION.id_user == ? GROUP BY EVENT.id_event ORDER BY (start_date) ASC", [getCurrentTime(), id_user], True)
 
 def getMyEvents(id_user):
-    return query_db("SELECT *, COUNT DISTINCT(PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE EVENT.id_user = ? GROUP BY EVENT.id_event", [id_user])
+    return query_db("SELECT *, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT JOIN ATTRIBUTE ON EVENT.id_event = ATTRIBUTE.id_event JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE EVENT.id_user = ? GROUP BY EVENT.id_event", [id_user])
 
 # DELETE (only if the user is the owner of the event)
 def deleteEvent(id_event, id_user):
