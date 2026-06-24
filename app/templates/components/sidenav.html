@@ -1,0 +1,165 @@
+{% block sidenav %}
+<aside
+  class="sidenav navbar navbar-vertical navbar-expand-xs border-radius-lg fixed-start ms-2 bg-white my-2 ps z-index-1000"
+  id="sidenav-main"
+>
+  <!-- Header -->
+  <div class="sidenav-header h-auto">
+    <i
+      class="fas fa-times p-3 cursor-pointer text-dark opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+      aria-hidden="true"
+      id="iconSidenav"
+    ></i>
+    <a
+      class="navbar-brand px-4 py-3 m-0 d-flex align-items-center justify-content-center text-lg"
+      href="/"
+    >
+      <span class="btn-inner--icon">
+        <i class="material-symbols-rounded me-2">event</i>
+      </span>
+      <span class="btn-inner--text text-dark font-weight-bold">Organ-IMAC</span>
+    </a>
+  </div>
+
+  <hr class="horizontal dark mt-0 mb-2" />
+
+  <!-- Main -->
+  <div class="collapse navbar-collapse w-auto ps" id="sidenav-collapse-main">
+    <ul class="navbar-nav">
+      {% if current_user %}
+      <!-- Dashboard -->
+      <li class="nav-item">
+        <a
+          class="nav-link {% if request.path == '/' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+          href="/"
+        >
+          <i class="material-symbols-rounded opacity-5">dashboard</i>
+          <span class="nav-link-text ms-1">Tableau de bord</span>
+        </a>
+      </li>
+
+      <!-- Profile -->
+      <li class="nav-item">
+        <a
+          class="nav-link {% if request.path == '/profile' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+          href="/profile"
+        >
+          <i class="material-symbols-rounded opacity-5">person</i>
+          <span class="nav-link-text ms-1">Profil</span>
+        </a>
+      </li>
+
+      <!-- Events -->
+      <li class="nav-item">
+        <a
+          class="nav-link text-dark collapsed"
+          href="#events-collapse"
+          data-bs-toggle="collapse"
+          aria-expanded="false"
+          aria-controls="events-collapse"
+        >
+          <i class="material-symbols-rounded opacity-5">event</i>
+          <span class="nav-link-text ms-1">Événements</span>
+        </a>
+        <div class="collapse ms-3" id="events-collapse">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a
+                class="nav-link text-dark d-flex align-items-center"
+                href="/events/create"
+              >
+                <i class="material-symbols-rounded opacity-5 me-2">
+                  add_circle
+                </i>
+                <span>Créer un événement</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-dark d-flex align-items-center"
+                href="/events/mine"
+              >
+                <i class="material-symbols-rounded opacity-5 me-2">person</i>
+                <span>Mes événements</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-dark d-flex align-items-center"
+                href="/events"
+              >
+                <i class="material-symbols-rounded opacity-5 me-2">
+                  calendar_view_month
+                </i>
+                <span>Événements</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- Admin -->
+      {% if current_user and current_user.admin %}
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="/admin">
+          <i class="material-symbols-rounded opacity-5">admin_panel_settings</i>
+          <span class="nav-link-text ms-1">Admin</span>
+        </a>
+      </li>
+      {% endif %} {% else %}
+      <li class="nav-item">
+        <a
+          class="nav-link {% if request.path == '/' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+          href="/"
+        >
+          <i class="material-symbols-rounded opacity-5">home</i>
+          <span class="nav-link-text ms-1">Accueil</span>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div class="sidenav-footer position-absolute w-100 bottom-0">
+    <div class="mx-3 mb-3">
+      {% if current_user %}
+      <button
+        class="btn btn-icon btn-3 btn-danger w-100 d-flex align-items-center justify-content-center"
+        data-bs-toggle="modal"
+        data-bs-target="#modal"
+        id="logoutModalButton"
+      >
+        <span class="btn-inner--icon">
+          <i class="material-symbols-rounded me-2">logout</i>
+        </span>
+        <span class="btn-inner--text">Déconnexion</span>
+      </a>
+      {% block scripts %}
+      <script src="{{ url_for('static', filename='assets/js/services/logout.js') }}"></script>
+      {% endblock %}
+
+      {% else %}
+      <a
+        class="btn btn-icon btn-3 btn-outline-dark w-100 d-flex align-items-center justify-content-center mb-2"
+        href="/login"
+      >
+        <span class="btn-inner--icon">
+          <i class="material-symbols-rounded me-2">login</i>
+        </span>
+        <span class="btn-inner--text">Connexion</span>
+      </a>
+      <a
+        class="btn btn-icon btn-3 bg-gradient-dark w-100 d-flex align-items-center justify-content-center gap-2"
+        href="/register"
+      >
+        <span class="btn-inner--icon">
+          <i class="material-symbols-rounded me-2">person_add</i>
+        </span>
+        <span class="btn-inner--text">Créer un compte</span>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</aside>
+{% endblock %}
