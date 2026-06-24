@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template, session, abort
 import service.event
+import service.admin
 
 page_bp = Blueprint("page", __name__)
 
@@ -37,3 +38,11 @@ def my_events():
         return render_template("pages/myEvents.html", current_user=user, events=events)
     else :
         return render_template("pages/no-auth.html")
+    
+@page_bp.route("/admin")
+def admin():
+    user = session.get("user")
+    if not user or user["admin"] != 1:
+        return abort(403)
+    users = service.admin.getUsers(user["id_user"])
+    return render_template("pages/admin.html", current_user=user, users=users)

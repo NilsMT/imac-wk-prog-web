@@ -14,7 +14,7 @@ def getUsers():
     if user["admin"] != 1:
         return jsonify({"message": "Admin failure : forbidden"}), 403
 
-    users = service.admin.getUsers()
+    users = service.admin.getUsers(user["id_user"])
     return jsonify(users), 200
 
 #update user
@@ -29,8 +29,9 @@ def updateUser(id_user):
         return jsonify({"message": "Admin failure : forbidden"}), 403
 
     #form data retrieval
-    active = request.form["active"]
-    admin = request.form["admin"]
+    data = request.get_json()
+    active = data.get("active")
+    admin = data.get("admin")
 
     if active is None and admin is None:
         return jsonify({"message": "Admin failure : request malformed/incomplete"}), 400

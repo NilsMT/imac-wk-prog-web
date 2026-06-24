@@ -1,0 +1,72 @@
+<!-- https://getbootstrap.com/docs/5.0/components/ -->
+<tr>
+    <!-- Id utilisateur -->
+    <td>
+        <span class="text-xs font-weight-normal">{{ user.id_user }}</span>
+    </td>
+    <!-- Nom -->
+    <td>
+        <span class="text-xs font-weight-normal">{{ user.name }}</span>
+    </td>
+    <!-- Prénom -->
+    <td>
+        <span class="text-xs font-weight-normal">{{ user.firstname }}</span>
+    </td>
+    <!-- Email -->
+    <td>
+        <span class="text-xs font-weight-normal">{{ user.email }}</span>
+    </td>
+    <!-- Pseudo -->
+    <td>
+        <span class="text-xs font-weight-normal">{{ user.pseudo }}</span>
+    </td>
+    <!-- Promo -->
+    <td>
+        <span class="text-xs font-weight-normal">{{ user.promo }}</span>
+    </td>
+    <!-- Est Admin -->
+    <td class="align-middle">
+        <span
+            class="badge rounded-pill {{ 'bg-success' if user.admin == 1 else 'bg-secondary' }} text-white"
+        >
+            {{ "Oui" if user.admin == 1 else "Non" }}
+        </span>
+    </td>
+    <!-- Est Actif -->
+    <td class="align-middle">
+        <span
+            class="badge rounded-pill {{ 'bg-success' if user.active == 1 else 'bg-danger' }} text-white"
+        >
+            {{ "Oui" if user.active == 1 else "Non" }}
+        </span>
+    </td>
+    <!-- Actions -->
+    <td class="align-middle text-center">
+        <div class="d-flex justify-content-evenly">
+            <a
+                href="javascript:;"
+                class="text-secondary text-sm font-weight-normal material-symbols-rounded"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="{{ 'Désactiver' if user.active == 1 else 'Activer' }}"
+                data-container="body"
+                data-animation="true"
+                onclick="toggleActive('{{ user.id_user }}', {{ user.active }})"
+            >
+                {{ "toggle_on" if user.active == 1 else "toggle_off" }}
+            </a>
+            <a
+                href="javascript:;"
+                class="text-secondary text-sm font-weight-normal material-symbols-rounded"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="{{ 'Retirer admin' if user.admin == 1 else 'Passer admin' }}"
+                data-container="body"
+                data-animation="true"
+                onclick="toggleAdmin('{{ user.id_user }}', {{ user.admin }})"
+            >
+                {{ "shield_person" if user.admin == 1 else "shield" }}
+            </a>
+        </div>
+    </td>
+</tr>
