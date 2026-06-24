@@ -147,6 +147,7 @@ def deleteUser():
 #############################
 import service.participation
 
+#add participation
 @app.route("/participation/add", methods=['POST'])
 def addParticipation():
     id_event = ""
@@ -173,7 +174,7 @@ def addParticipation():
         case _:
             return jsonify({"message": "Participation failure : unknown returned status"}), 500
 
-
+#remove participation
 @app.route("/participation/remove", methods=['DELETE'])
 def removeParticipation():
     id_event = ""
