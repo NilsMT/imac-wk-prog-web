@@ -1,33 +1,47 @@
-async function toggleActive(id_user, current) {
-    const newValue = current === 1 ? 0 : 1;
+document.addEventListener("DOMContentLoaded", function () {
+    const toggleActiveButtons = document.querySelectorAll(
+        ".toggleActiveButton",
+    );
 
-    const response = await fetch(`/api/v1/admin/users/${id_user}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ active: newValue }),
+    toggleActiveButtons.forEach((button) => {
+        button.addEventListener("click", async function () {
+            const [, userId, active] = this.id.split("-");
+            console.log(
+                `Toggling active for user ID: ${userId}, current state: ${active}`,
+            );
+            const response = await fetch(`/api/v1/admin/users/${userId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ active: active === "1" ? 0 : 1 }),
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error("Failed to toggle user active state");
+            }
+        });
     });
 
-    if (response.ok) {
-        location.reload();
-    } else {
-        const data = await response.json();
-        alert(data.message);
-    }
-}
+    const toggleAdminButtons = document.querySelectorAll(".toggleAdminButton");
 
-async function toggleAdmin(id_user, current) {
-    const newValue = current === 1 ? 0 : 1;
-
-    const response = await fetch(`/api/v1/admin/users/${id_user}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ admin: newValue }),
+    toggleAdminButtons.forEach((button) => {
+        button.addEventListener("click", async function () {
+            const parts = this.id.split("-");
+            const userId = parts.slice(1, -1).join("-");
+            const admin = parts[parts.length - 1];
+            console.log(
+                `Toggling admin for user ID: ${userId}, current state: ${admin}`,
+            );
+            const response = await fetch(`/api/v1/admin/users/${userId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ admin: admin === "1" ? 0 : 1 }),
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error("Failed to toggle user admin state");
+            }
+        });
     });
-
-    if (response.ok) {
-        location.reload();
-    } else {
-        const data = await response.json();
-        alert(data.message);
-    }
-}
+});

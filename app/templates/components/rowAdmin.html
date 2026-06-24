@@ -43,30 +43,36 @@
     <!-- Actions -->
     <td class="align-middle text-center">
         <div class="d-flex justify-content-evenly">
-            <a
-                href="javascript:;"
-                class="text-secondary text-sm font-weight-normal material-symbols-rounded"
+            <button
+                id="toggleActiveButton-{{ user.id_user }}-{{ user.active }}"
+                class="btn btn-light btn-sm d-flex mb-0 align-items-center toggleActiveButton"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 title="{{ 'Désactiver' if user.active == 1 else 'Activer' }}"
                 data-container="body"
                 data-animation="true"
-                onclick="toggleActive('{{ user.id_user }}', {{ user.active }})"
             >
-                {{ "toggle_on" if user.active == 1 else "toggle_off" }}
-            </a>
-            <a
-                href="javascript:;"
-                class="text-secondary text-sm font-weight-normal material-symbols-rounded"
+                <span
+                    class="material-symbols-rounded {{ 'text-success' if user.active == 1 else 'text-secondary' }} fs-6"
+                >
+                    {{ "toggle_on" if user.active == 1 else "toggle_off" }}
+                </span>
+            </button>
+            <button
+                id="toggleAdminButton-{{ user.id_user }}-{{ user.admin }}"
+                class="btn btn-light btn-sm d-flex mb-0 align-items-center toggleAdminButton"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 title="{{ 'Retirer admin' if user.admin == 1 else 'Passer admin' }}"
                 data-container="body"
                 data-animation="true"
-                onclick="toggleAdmin('{{ user.id_user }}', {{ user.admin }})"
             >
-                {{ "shield_person" if user.admin == 1 else "shield" }}
-            </a>
+                <span
+                    class="material-symbols-rounded {{ 'text-warning' if user.admin == 1 else 'text-secondary' }} fs-6"
+                >
+                    {{ "shield_person" if user.admin == 1 else "shield" }}
+                </span>
+            </button>
         </div>
     </td>
 </tr>
