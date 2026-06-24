@@ -15,7 +15,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 #create event
-@event_bp.route("/event", methods=['POST'])
+@event_bp.route("/api/v1/events", methods=['POST'])
 def createEvent():
     user = session.get("user")
     data_event = request.form
@@ -43,7 +43,7 @@ def createEvent():
     return jsonify({"message" : messsage}), status
 
 #delete event
-@event_bp.route("/event/<int:id_event>", methods=['DELETE'])
+@event_bp.route("/api/v1/events/<int:id_event>", methods=['DELETE'])
 def deleteEvent(id_event):
     user = session.get("user")
 
@@ -51,7 +51,7 @@ def deleteEvent(id_event):
     return jsonify({"message" : message}), status
 
 #update event
-@event_bp.route("/event/<int:id_event>", methods=['PUT'])
+@event_bp.route("/api/v1/events/<int:id_event>", methods=['PUT'])
 def updateEvent(id_event):
     user = session.get("user")
     data_event = request.form
@@ -60,7 +60,7 @@ def updateEvent(id_event):
     return jsonify({"message" : message}), status
 
 # get events
-@event_bp.route("/event/all", methods=['GET'])
+@event_bp.route("/api/v1/events/all", methods=['GET'])
 def getAllEvents():
     objects, status = service.event.getAllEvents()
     match status:
@@ -70,7 +70,7 @@ def getAllEvents():
             return jsonify(objects), 500
 
 # get upcoming events the user is participating in
-@event_bp.route("/event/allNext", methods=['GET'])
+@event_bp.route("/api/v1/events/allNext", methods=['GET'])
 def getAllNextEvents():
     objects, status = service.event.getAllNextEvents()
     match status:
@@ -80,7 +80,7 @@ def getAllNextEvents():
             return jsonify(objects), 500
 
 # get the next upcoming event the user is participating in
-@event_bp.route("/event/myNext", methods=['GET'])
+@event_bp.route("/api/v1/events/myNext", methods=['GET'])
 def getNextEvent():
     user = session.get("user")
 
@@ -92,7 +92,7 @@ def getNextEvent():
             return jsonify(objects), 500
 
 # get events the user is participating in
-@event_bp.route("/event/myEvents", methods=['GET'])
+@event_bp.route("/api/v1/events/myEvents", methods=['GET'])
 def getMyEvents():
     user = session.get("user")
 
