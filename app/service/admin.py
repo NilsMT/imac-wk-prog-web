@@ -1,14 +1,14 @@
 #import
 import model.admin
 
-def getUsers():
+def getUsers(id_user):
     """
         Get all users (without password)
 
         Return:
         >>> [...] list of users
     """
-    return model.admin.getUsers()
+    return model.admin.getUsers(id_user)
 
 def setActive(id_user, active):
     """
