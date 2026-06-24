@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(result);
 
             if (response.ok) {
-                window.location.href = "/dashboard";
+                window.location.href = "/";
             }
         }
     });
