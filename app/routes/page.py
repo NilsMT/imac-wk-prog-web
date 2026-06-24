@@ -28,3 +28,12 @@ def register():
         return render_template("pages/dashboard.html", current_user=user)
     else :
         return render_template("pages/register.html")
+
+@page_bp.route("/myEvents")
+def my_events():
+    user = session.get("user")
+    events = service.event.getMyEvents(user["id_user"]) if user else []
+    if user:
+        return render_template("pages/myEvents.html", current_user=user, events=events)
+    else :
+        return render_template("pages/no-auth.html")

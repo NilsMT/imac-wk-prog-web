@@ -47,8 +47,8 @@ def createEvent():
 def deleteEvent(id_event):
     user = session.get("user")
 
-    messsage, status = service.event.deleteEvent(id_event, user["id_user"])
-    return jsonify({"message" : messsage}), status
+    message, status = service.event.deleteEvent(id_event, user["id_user"])
+    return jsonify({"message" : message}), status
 
 #update event
 @event_bp.route("/event/<int:id_event>", methods=['PUT'])
@@ -56,8 +56,8 @@ def updateEvent(id_event):
     user = session.get("user")
     data_event = request.form
 
-    messsage, status = service.event.updateEvent(data_event, id_event, user["id_user"])
-    return jsonify({"message" : messsage}), status
+    message, status = service.event.updateEvent(data_event, id_event, user["id_user"])
+    return jsonify({"message" : message}), status
 
 # get events
 @event_bp.route("/event/all", methods=['GET'])
