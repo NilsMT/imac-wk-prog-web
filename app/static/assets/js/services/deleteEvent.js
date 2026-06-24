@@ -1,19 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const deleteEventButtons = document.querySelectorAll(".deleteEventButton");
+  const deleteEventButtons = document.querySelectorAll(".deleteEventButton");
 
-    deleteEventButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-            console.log(this.id);
-            const eventId = this.id.split("-")[1];
-            console.log(`Deleting event with ID: ${eventId}`);
-            const response = fetch(`api/v1/event/${eventId}`, {
-                method: "DELETE",
-            });
-            if (response.ok) {
-                window.location.reload();
-            } else {
-                console.error("Failed to delete event");
-            }
-        });
+  deleteEventButtons.forEach((button) => {
+    button.addEventListener("click", async function () {
+      const eventId = this.id.split("-")[1];
+      const response = await fetch(`/api/v1/events/${eventId}`, {
+        method: "DELETE",
+      });
+      if (response.ok || response.status === 200) {
+        window.location.reload();
+      } else {
+        console.error("Failed to delete event");
+      }
     });
+  });
 });

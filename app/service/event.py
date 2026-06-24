@@ -21,6 +21,22 @@ def deleteEvent(id_event, id_user):
         return "Event deleted successfully", 200
     except sqlite3.IntegrityError as e:
         return "Integrity error: " + str(e), 400
+    
+def getEvent(id_event) :
+    try :
+        event = model.event.getEvent(id_event)
+
+        if not event:
+            return {}, 400
+        
+        event_dict = dict(event)
+        attributes = model.event.getAttributes(event_dict["id_event"])
+        attributes_list = [dict(attr) if hasattr(attr, 'keys') else attr for attr in attributes]
+        event_dict["attributes"] = attributes_list
+        
+        return event_dict, 200
+    except sqlite3.IntegrityError as e:
+        return {"error": "Integrity error: " + str(e)}, 500
 
 def getAllEvents() :
     try :

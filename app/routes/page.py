@@ -54,3 +54,11 @@ def admin():
         return abort(403)
     users = service.admin.getUsers(user["id_user"])
     return render_template("pages/admin.html", current_user=user, users=users)
+
+@page_bp.route("/createEvent")
+def createEvent():
+    user = session.get("user")
+    if user:
+        return render_template("pages/createEvent.html", current_user=user)
+    else :
+        return render_template("pages/no-auth.html")

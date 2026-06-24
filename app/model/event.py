@@ -3,6 +3,9 @@ from database import query_db, get_db
 from utils import getCurrentTime
 
 # SELECT
+def getEvent(id_event):
+    return query_db("SELECT EVENT.*, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT LEFT JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event WHERE EVENT.id_event = ? GROUP BY EVENT.id_event", [id_event], True)
+
 def getAllEvents():
     return query_db("SELECT EVENT.*, COUNT(DISTINCT PARTICIPATION.id_user) AS nb_participants FROM EVENT LEFT JOIN PARTICIPATION ON EVENT.id_event = PARTICIPATION.id_event GROUP BY EVENT.id_event")
 
@@ -29,7 +32,7 @@ def insertEvent(data_event, id_user, image_url):
     col = ["name", "start_date", "end_date", "location", "id_user"]
     val = [data_event["name"], data_event["start_date"], data_event["end_date"], data_event["location"], id_user]
 
-    if "image" in data_event:
+    if image_url:
         col.append("image")
         val.append(image_url)
 
