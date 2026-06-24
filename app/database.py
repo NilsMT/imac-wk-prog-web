@@ -37,9 +37,9 @@ def query_db(query, args=(), one=False):
     cur = db.execute(query, args)
     
     if query.strip().upper().startswith("SELECT"):
-        rv = cur.fetchall()
+        qr = cur.fetchall()
         cur.close()
-        return (rv[0] if rv else None) if one else rv
+        return (qr[0] if qr else None) if one else qr
     else:
         db.commit()
         return cur.rowcount

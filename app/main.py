@@ -12,11 +12,6 @@ import crypto
 import database
 import secrets
 
-#services
-import service.auth
-import model.auth
-import service.user
-
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
 
@@ -52,13 +47,14 @@ def register():
 #############################
 #auth routes
 #############################
+import service.auth
+import model.auth
 
-#try to login
-#if fail, redirect to inscription thing
 @app.route("/user/login", methods=['POST'])
 def loginUser():
     email = password = ""
 
+    #form data retrieval
     try:
         email = request.form["email"]
         password = request.form["password"]
@@ -67,6 +63,7 @@ def loginUser():
     
     user, status = service.auth.tryToLogin(email,password)
     
+    #status handling
     match status:
         case 0:
             user = dict(user)
@@ -89,12 +86,14 @@ def logoutUser():
 #############################
 #user routes
 #############################
+import service.user
 
 #register account
 @app.route("/user/register", methods=['POST'])
 def registerUser():
     email = password = name = firstname = promo = pseudo = ""
 
+    #form data retrieval
     try:
         email = request.form["email"]
         password = request.form["password"]
@@ -107,6 +106,7 @@ def registerUser():
     
     status = service.user.registerUser(email,password,name,firstname,promo,pseudo)
 
+    #status handling
     match status:
         case 0:
             user = dict(model.auth.getUserFromEmail(email))
@@ -125,6 +125,7 @@ def registerUser():
 def deleteUser():
     email = ""
 
+    #form data retrieval
     try:
         email = request.form["email"]
     except:
@@ -132,6 +133,7 @@ def deleteUser():
     
     status = service.user.deleteUser(email)
 
+    #status handling
     match status:
         case 0:
             return jsonify({"message" : "Deletion success"}),200
@@ -139,6 +141,64 @@ def deleteUser():
             return jsonify({"message" : "Deletion failure : user doesn't exist"}),404
         case _:
             return jsonify({"message" : "Deletion failure : unknown returned status"}),500
+
+#############################
+#participate routes
+#############################
+import service.participation
+
+@app.route("/participation/add", methods=['POST'])
+def addParticipation():
+    id_event = ""
+
+    #session retrieval
+    user = session.get("user")
+    if not user:
+        return jsonify({"message": "Participation failure : not logged in"}), 401
+    
+    #form data retrieval
+    try:
+        id_event = request.form["id_event"]
+    except:
+        return jsonify({"message": "Participation failure : request malformed/incomplete"}), 400
+
+    status = service.participation.addParticipation(user["id_user"], id_event)
+
+    #status handling
+    match status:
+        case 0:
+            return jsonify({"message": "Participation added successfully"}), 200
+        case 1:
+            return jsonify({"message": "Participation failure : already registered"}), 409
+        case _:
+            return jsonify({"message": "Participation failure : unknown returned status"}), 500
+
+
+@app.route("/participation/remove", methods=['DELETE'])
+def removeParticipation():
+    id_event = ""
+
+    #session retrieval
+    user = session.get("user")
+    if not user:
+        return jsonify({"message": "Removal failure : not logged in"}), 401
+
+    #form data retrieval
+    try:
+        id_event = request.form["id_event"]
+    except:
+        return jsonify({"message": "Removal failure : request malformed/incomplete"}), 400
+
+    status = service.participation.removeParticipation(user["id_user"], id_event)
+
+    #status handling
+    match status:
+        case 0:
+            return jsonify({"message": "Participation removed successfully"}), 200
+        case 1:
+            return jsonify({"message": "Removal failure : participation doesn't exist"}), 404
+        case _:
+            return jsonify({"message": "Removal failure : unknown returned status"}), 500
 
 #############################
 #special behaviors
