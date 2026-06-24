@@ -4,13 +4,13 @@ from utils import getCurrentTime
 
 comment_bp = Blueprint("comment", __name__)
 
-@comment_bp.route("/comment/get", methods=['GET'])
+@comment_bp.route("/comments", methods=['GET'])
 def getCommentsOnEvent():
     id_event = ""
 
     #form data retrieval
     try:
-        id_event = request.args.get("id_event")
+        id_event = request.args["id_event"]
     except:
         return jsonify({"message" : "Comment retrieval failure : request malformed/incomplete"}),400
     
@@ -18,7 +18,7 @@ def getCommentsOnEvent():
     return jsonify(comments),200
            
 
-@comment_bp.route("/comment/add", methods=['POST'])
+@comment_bp.route("/comments", methods=['POST'])
 def addComment():
     id_event = message = ""
     comment_time = getCurrentTime()
