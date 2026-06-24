@@ -145,7 +145,7 @@ def deleteUser():
 # event routes
 ############################
 #create event
-@app.route("/event", method=['POST'])
+@app.route("/event", methods=['POST'])
 def createEvent():
     user = session.get("user")
     data_event = request.form
@@ -154,7 +154,7 @@ def createEvent():
     return jsonify({"message" : messsage}), status
 
 #delete event
-@app.route("/event/<int:id_event>", method=['DELETE'])
+@app.route("/event/<int:id_event>", methods=['DELETE'])
 def deleteEvent(id_event):
     user = session.get("user")
 
@@ -162,7 +162,7 @@ def deleteEvent(id_event):
     return jsonify({"message" : messsage}), status
 
 #update event
-@app.route("/event/<int:id_event>", method=['PUT'])
+@app.route("/event/<int:id_event>", methods=['PUT'])
 def updateEvent(id_event):
     user = session.get("user")
     data_event = request.form
@@ -171,7 +171,7 @@ def updateEvent(id_event):
     return jsonify({"message" : messsage}), status
 
 # get events
-@app.route("/event/all", method=['GET'])
+@app.route("/event/all", methods=['GET'])
 def getAllEvents():
     objects, status = service.event.getAllEvents()
     match status:
@@ -180,7 +180,7 @@ def getAllEvents():
         case _:
             return jsonify(objects), 500
 
-@app.route("/event/allNext", method=['GET'])
+@app.route("/event/allNext", methods=['GET'])
 def getAllNextEvents():
     objects, status = service.event.getAllNextEvents()
     match status:
@@ -189,7 +189,7 @@ def getAllNextEvents():
         case _:
             return jsonify(objects), 500
 
-@app.route("/event/myNext", method=['GET'])
+@app.route("/event/myNext", methods=['GET'])
 def getNextEvent():
     user = session.get("user")
 
@@ -200,7 +200,7 @@ def getNextEvent():
         case _:
             return jsonify(objects), 500
 
-@app.route("/event/myEvents", method=['GET'])
+@app.route("/event/myEvents", methods=['GET'])
 def getMyEvents():
     user = session.get("user")
 
