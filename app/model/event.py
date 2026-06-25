@@ -58,12 +58,15 @@ def insertEvent(data_event, id_user, image_url):
     return id_event
 
 # UPDATE (only if the user is the owner of the event)
-def updateEvent(data_event, id_event, id_user):
+def updateEvent(data_event, id_event, id_user, img_url):
     updates = []
     values = []
 
     for key in ["name", "start_date", "end_date", "location", "image", "description"]:
-        if key in data_event:
+        if key == "image" and img_url:
+            updates.append(f"{key} = ?")
+            values.append(img_url)
+        elif key in data_event:
             updates.append(f"{key} = ?")
             values.append(data_event[key])
 

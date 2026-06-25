@@ -4,23 +4,23 @@ import sqlite3
 def createEvent(data_event, id_user, image_url):
     try:
         model.event.insertEvent(data_event, id_user, image_url)
-        return "Event created successfully", None
+        return "Event created successfully", 201
     except sqlite3.IntegrityError as e:
-        return None, "Integrity error: " + str(e)
-
-def updateEvent(data_event, id_event, id_user):
-    try:
-        model.event.updateEvent(data_event, id_event, id_user)
-        return "Event updated successfully", None
+        return "Integrity error: " + str(e), None
+    
+def updateEvent(data_event, id_event, id_user, image_url):
+    try :
+        model.event.updateEvent(data_event, id_event, id_user, image_url)
+        return "Event updated successfully", 200
     except sqlite3.IntegrityError as e:
-        return None, "Integrity error: " + str(e)
+        return "Integrity error: " + str(e), None
 
 def deleteEvent(id_event, id_user):
     try:
         model.event.deleteEvent(id_event, id_user)
-        return "Event deleted successfully", None
+        return "Event deleted successfully", 200
     except sqlite3.IntegrityError as e:
-        return None, "Integrity error: " + str(e)
+        return "Integrity error: " + str(e), None
 
 def getEvent(id_event):
     try:
