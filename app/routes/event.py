@@ -84,7 +84,7 @@ def updateEvent(id_event):
                 return jsonify({"message": f"Erreur lors de l'upload de l'image : {str(e)}"}), 500
 
     message, status = service.event.updateEvent(data_event, id_event, user["id_user"], image_url)
-    if status == 200 and image:
+    if status == 200 and image and image_url and image != image_url: # Si y'a eu changement d'image, on supprime l'ancienne
         try:
             image_path = os.path.join('app', image.lstrip('/'))
             if os.path.exists(image_path):

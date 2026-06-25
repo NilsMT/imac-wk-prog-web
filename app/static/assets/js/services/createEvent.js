@@ -11,17 +11,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const attributeId = `attribute-${attributeCounter}`;
 
     const attributeGroup = document.createElement("div");
-    attributeGroup.className = "row mb-2 g-2 align-items-center justify-content-between";
+    attributeGroup.className =
+      "row mb-2 g-2 align-items-center justify-content-between";
     attributeGroup.id = attributeId;
     attributeGroup.innerHTML = `
       <div class="col-md-5">
         <div class="input-group input-group-lg input-group-outline">
-          <input type="text" class="form-control form-control-lg" name="attribute_name_${attributeCounter}" placeholder="Nom (ex: Musique)" required>
+          <input type="text" class="form-control form-control-lg" name="attribute_name_${attributeCounter}" data-attribute-id="${attributeCounter}" placeholder="Nom (ex: Musique)" required>
         </div>
       </div>
       <div class="col-md-5">
         <div class="input-group input-group-lg input-group-outline">
-          <input type="text" class="form-control form-control-lg" name="attribute_value_${attributeCounter}" placeholder="Valeur (ex: Jazz)" required>
+          <input type="text" class="form-control form-control-lg" name="attribute_value_${attributeCounter}" data-attribute-id="${attributeCounter}" placeholder="Valeur (ex: Jazz)" required>
         </div>
       </div>
       <div class="col-md-2 d-flex align-items-center">
@@ -32,9 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
     attributesContainer.appendChild(attributeGroup);
-    attributeGroup.querySelector(".remove-attribute").addEventListener("click", function () {
-      document.getElementById(this.dataset.attributeId).remove();
-    });
+    attributeGroup
+      .querySelector(".remove-attribute")
+      .addEventListener("click", function () {
+        document.getElementById(this.dataset.attributeId).remove();
+      });
   });
 
   eventForm.addEventListener("submit", async function (e) {
@@ -45,9 +48,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const formData = new FormData(eventForm);
 
     const attributes = [];
-    eventForm.querySelectorAll("[name^='attribute_name_']").forEach((input, index) => {
+    eventForm.querySelectorAll("[name^='attribute_name_']").forEach((input) => {
       const name = input.value;
-      const valueInput = eventForm.querySelector(`[name="attribute_value_${index + 1}"]`);
+      const index = input.getAttribute("data-attribute-id");
+      const valueInput = eventForm.querySelector(
+        `[name="attribute_value_${index}"]`,
+      );
       const value = valueInput ? valueInput.value : "";
       if (name && value) {
         attributes.push({ type: "TEXT", name, value });
@@ -80,10 +86,16 @@ document.addEventListener("DOMContentLoaded", function () {
       if (response.ok) {
         window.location.href = "/myEvents";
       } else {
-        showError("eventForm", result.message || "Erreur lors de la création de l'événement.");
+        showError(
+          "eventForm",
+          result.message || "Erreur lors de la création de l'événement.",
+        );
       }
     } catch (error) {
-      showError("eventForm", "Erreur de connexion au serveur : " + error.message);
+      showError(
+        "eventForm",
+        "Erreur de connexion au serveur : " + error.message,
+      );
     } finally {
       submitBtn.disabled = false;
     }

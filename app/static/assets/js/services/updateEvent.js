@@ -15,7 +15,9 @@ async function editEvent(eventId) {
   try {
     const response = await fetch(`/api/v1/events/${eventId}`);
     if (!response.ok) {
-      throw new Error("Erreur lors de la récupération des données de l'événement.");
+      throw new Error(
+        "Erreur lors de la récupération des données de l'événement.",
+      );
     }
     const event = await response.json();
 
@@ -130,12 +132,12 @@ async function editEvent(eventId) {
               </div>
             </div>
           </div>
-          <div class="col-md-6 d-flex column align-items-center">
+          <div class="col-md-6 d-flex flex-column">
             <h6 class="mb-0">Image actuelle :</h6>
             <img
-              src="${event.image || '/static/uploads/default.jpg'}"
+              src="${event.image || "/static/uploads/default.jpg"}"
               alt="Image de l'événement"
-              class="img-fluid ms-3"
+              class="img-fluid"
               style="max-height: 100px; max-width: 100%; object-fit: cover; border-radius: 4px;"
             />
           </div>
@@ -158,7 +160,7 @@ async function editEvent(eventId) {
           </div>
       </form>
     `;
-    
+
     const attributesContainer = document.getElementById(
       "editAttributesContainer",
     );
@@ -170,7 +172,8 @@ async function editEvent(eventId) {
         editAttributeCounter++;
         const attributeId = `editAttribute${editAttributeCounter}`;
         const attributeGroup = document.createElement("div");
-        attributeGroup.className = "row mb-2 g-2 align-items-center justify-content-between";
+        attributeGroup.className =
+          "row mb-2 g-2 align-items-center justify-content-between";
         attributeGroup.id = attributeId;
 
         attributeGroup.innerHTML = `
@@ -180,6 +183,7 @@ async function editEvent(eventId) {
                 type="text"
                 class="form-control form-control-lg"
                 name="attributeName${editAttributeCounter}"
+                data-attribute-id="${editAttributeCounter}"
                 value="${attribute.name}"
                 required
               />
@@ -191,6 +195,7 @@ async function editEvent(eventId) {
                 type="text"
                 class="form-control form-control-lg"
                 name="attributeValue${editAttributeCounter}"
+                data-attribute-id="${editAttributeCounter}"
                 value="${attribute.value}"
                 required
               />
@@ -209,10 +214,12 @@ async function editEvent(eventId) {
 
         attributesContainer.appendChild(attributeGroup);
         attributeGroup
-        .querySelector(".remove-attribute")
-        .addEventListener("click", function () {
-          document.getElementById(this.getAttribute("data-attribute-id")).remove();
-        });
+          .querySelector(".remove-attribute")
+          .addEventListener("click", function () {
+            document
+              .getElementById(this.getAttribute("data-attribute-id"))
+              .remove();
+          });
       });
     }
 
@@ -220,7 +227,8 @@ async function editEvent(eventId) {
       editAttributeCounter++;
       const attributeId = `editAttribute${editAttributeCounter}`;
       const attributeGroup = document.createElement("div");
-      attributeGroup.className = "row mb-2 g-2 align-items-center justify-content-between";
+      attributeGroup.className =
+        "row mb-2 g-2 align-items-center justify-content-between";
       attributeGroup.id = attributeId;
 
       attributeGroup.innerHTML = `
@@ -230,6 +238,7 @@ async function editEvent(eventId) {
               type="text"
               class="form-control form-control-lg"
               name="attributeName${editAttributeCounter}"
+              data-attribute-id="${editAttributeCounter}"
               placeholder="Nom (ex: Musique)"
               required
             />
@@ -241,6 +250,7 @@ async function editEvent(eventId) {
               type="text"
               class="form-control form-control-lg"
               name="attributeValue${editAttributeCounter}"
+              data-attribute-id="${editAttributeCounter}"
               placeholder="Valeur (ex: Rock)"
               required
             />
@@ -259,71 +269,79 @@ async function editEvent(eventId) {
 
       attributesContainer.appendChild(attributeGroup);
       attributeGroup
-      .querySelector(".remove-attribute")
-      .addEventListener("click", function () {
-        document.getElementById(this.getAttribute("data-attribute-id")).remove();
-      });
+        .querySelector(".remove-attribute")
+        .addEventListener("click", function () {
+          document
+            .getElementById(this.getAttribute("data-attribute-id"))
+            .remove();
+        });
     });
 
-    document.getElementById("confirmEditBtn").addEventListener("click", async function () {
-      this.disabled = true;
-      const form = document.getElementById("editEventForm");
-      const formData = new FormData(form);
+    document
+      .getElementById("confirmEditBtn")
+      .addEventListener("click", async function () {
+        this.disabled = true;
+        const form = document.getElementById("editEventForm");
+        const formData = new FormData(form);
 
-      const attributes = [];
-      const attributeInputs = form.querySelectorAll(
-        "[name^='attributeName']",
-      );
-
-      attributeInputs.forEach((input, index) => {
-        const name = input.value;
-        const valueInput = form.querySelector(
-          `[name='attributeValue${index + 1}']`,
+        const attributes = [];
+        const attributeInputs = form.querySelectorAll(
+          "[name^='attributeName']",
         );
-        const value = valueInput ? valueInput.value : "";
-        if (name && value) {
-          attributes.push({ type:"TEXT", name: name, value: value });
-        }
-      });
 
-      console.log("Attributs collectés :", attributes);
-
-      const eventData = {
-        name: formData.get("name"),
-        start_date: new Date(formData.get("start_date")).toISOString(),
-        end_date: new Date(formData.get("end_date")).toISOString(),
-        location: formData.get("location"),
-        description: formData.get("description"),
-        attributes: attributes,
-      };
-
-      const finalFormData = new FormData();
-      finalFormData.append("eventData", JSON.stringify(eventData));
-      if (formData.get("image") && formData.get("image").size > 0) {
-        finalFormData.append("image", formData.get("image"));
-      }
-
-      try {
-        const response = await fetch(`/api/v1/events/${eventId}`, {
-          method: "PUT",
-          body: finalFormData,
+        attributeInputs.forEach((input) => {
+          const name = input.value;
+          const index = input.getAttribute("data-attribute-id");
+          const valueInput = form.querySelector(
+            `[name='attributeValue${index}']`,
+          );
+          const value = valueInput ? valueInput.value : "";
+          if (name && value) {
+            attributes.push({ type: "TEXT", name: name, value: value });
+          }
         });
 
-        const result = await response.json();
-        if (response.ok) {
-          bootstrap.Modal.getInstance(modalEvent).hide();
-          window.location.reload();
-        } else {
-          alert(result.message || "Erreur lors de la mise à jour de l'événement.");
+        const eventData = {
+          name: formData.get("name"),
+          start_date: new Date(formData.get("start_date")).toISOString(),
+          end_date: new Date(formData.get("end_date")).toISOString(),
+          location: formData.get("location"),
+          description: formData.get("description"),
+          attributes: attributes,
+        };
+
+        const finalFormData = new FormData();
+        finalFormData.append("eventData", JSON.stringify(eventData));
+        if (formData.get("image") && formData.get("image").size > 0) {
+          finalFormData.append("image", formData.get("image"));
         }
-      } catch (error) {
-        console.error("Erreur lors de la mise à jour de l'événement:", error);
-      } finally {
-        this.disabled = false;
-      }
-    });
+
+        try {
+          const response = await fetch(`/api/v1/events/${eventId}`, {
+            method: "PUT",
+            body: finalFormData,
+          });
+
+          const result = await response.json();
+          if (response.ok) {
+            bootstrap.Modal.getInstance(modalEvent).hide();
+            window.location.reload();
+          } else {
+            alert(
+              result.message || "Erreur lors de la mise à jour de l'événement.",
+            );
+          }
+        } catch (error) {
+          console.error("Erreur lors de la mise à jour de l'événement:", error);
+        } finally {
+          this.disabled = false;
+        }
+      });
   } catch (error) {
-    console.error("Erreur lors de la récupération des données de l'événement:", error);
+    console.error(
+      "Erreur lors de la récupération des données de l'événement:",
+      error,
+    );
     modalBody.innerHTML = `
       <div class="alert alert-danger">
         Impossible de charger les détails de l'événement.

@@ -1,0 +1,104 @@
+{% extends "base.html" %} {% block title %}{%if request.path == "/events"
+%}Evénements - Organ-IMAC{% elif request.path == "/myEvents" %}Mes événements -
+Organ-IMAC{% endif %} {% endblock %} {% block content %}
+<div class="container-fluid h-100">
+  <h1 class="h2 text-center mb-4 mt-3">
+    {% if request.path == "/events" %}Tous les événements{% elif request.path ==
+    "/myEvents" %}Mes événements{% endif %}
+  </h1>
+  <div class="container mt-5">
+    {% if error %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+    {% endif %}
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table align-items-center mb-0 rounded-3" id="data-table">
+          <thead>
+            <tr>
+              <th
+                class="text-uppercase text-xxs font-weight-bolder opacity-7 ps-3"
+              >
+                Nom
+              </th>
+              <th
+                class="text-uppercase text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Nombre de participants
+              </th>
+              <th
+                class="text-uppercase text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Date de début
+              </th>
+              <th
+                class="text-uppercase text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Date de fin
+              </th>
+              <th
+                class="text-uppercase text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Lieu
+              </th>
+              <th
+                class="text-uppercase text-center text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% set isPastEvents = false %} {% if next_events|length == 0 and
+            past_events|length == 0 %}
+            <tr>
+              <td colspan="6" class="text-center">Aucun événement</td>
+            </tr>
+            {% else %}
+            <!-- Événements à venir -->
+            {% if next_events|length > 0 %}
+            <tr class="separator-row">
+              <td colspan="6" class="text-center py-2 bg-info text-white">
+                <div
+                  class="d-flex align-items-center justify-content-center gap-2 w-100"
+                >
+                  <i class="material-symbols-rounded me-1">event</i>
+                  Événements à venir
+                </div>
+              </td>
+            </tr>
+            {% for event in next_events %} {% include 'components/rowEvent.html'
+            %} {% endfor %} {% else %}
+            <tr>
+              <td colspan="6" class="text-center">
+                Aucun événement à venir. Vous pouvez créer un événement en
+                cliquant sur le bouton "Créer un événement" dans le menu de
+                navigation.
+              </td>
+            </tr>
+            {% endif %} {% if past_events|length > 0 %} {% set isPastEvents =
+            true %}
+            <tr class="separator-row">
+              <td colspan="6" class="text-center py-2 bg-gray-600 text-white">
+                <div
+                  class="d-flex align-items-center justify-content-center gap-2 w-100"
+                >
+                  <i class="material-symbols-rounded me-1">history</i>
+                  Événements passés
+                </div>
+              </td>
+            </tr>
+            {% for event in past_events %} {% set isLast = loop.last %} {%
+            include 'components/rowEvent.html' %} {% endfor %} {% endif %} {%
+            endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %} {% if request.path == "/events" %}
+<script src="{{ url_for('static', filename='/assets/js/services/viewEvent.js') }}"></script>
+{% elif request.path == "/myEvents" %}
+<script src="{{ url_for('static', filename='/assets/js/services/updateEvent.js') }}"></script>
+<script src="{{ url_for('static', filename='/assets/js/services/deleteEvent.js') }}"></script>
+{% endif %} {% endblock %}

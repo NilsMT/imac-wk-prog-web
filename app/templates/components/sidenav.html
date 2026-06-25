@@ -76,6 +76,15 @@
             </li>
             <li class="nav-item">
               <a
+                class="nav-link {% if request.path == '/events' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+                href="/events"
+              >
+                <i class="material-symbols-rounded opacity-5 me-2">event</i>
+                <span>Tous les événements</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
                 class="nav-link {% if request.path == '/myEvents' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
                 href="/myEvents"
               >

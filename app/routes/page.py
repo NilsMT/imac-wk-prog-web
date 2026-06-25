@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, abort
+from utils import getCurrentTime
 import service.event
-import service.admin
 from decorator import login_required, active_required, admin_required
 
 page_bp = Blueprint("page", __name__)
@@ -32,13 +32,33 @@ def register():
         return render_template("pages/dashboard.html", current_user=user)
     return render_template("pages/register.html")
 
+@page_bp.route("/events")
+@login_required
+@active_required
+def events():
+    user = session.get("user")
+    events, error = service.event.getAllEvents()
+    past_events, next_events = [], []
+    for event in events:
+        if event["end_date"] < getCurrentTime():
+            past_events.append(event)
+        else:
+            next_events.append(event)
+    return render_template("pages/events.html", current_user=user, past_events=past_events, next_events=next_events, viewType=True, error=error)
+
 @page_bp.route("/myEvents")
 @login_required
 @active_required
 def my_events():
     user = session.get("user")
     events, error = service.event.getMyEvents(user["id_user"])
-    return render_template("pages/myEvents.html", current_user=user, events=events, error=error)
+    past_events, next_events = [], []
+    for event in events:
+        if event["end_date"] < getCurrentTime():
+            past_events.append(event)
+        else:
+            next_events.append(event)
+    return render_template("pages/events.html", current_user=user, past_events=past_events, next_events=next_events, viewType=False, error=error)
 
 @page_bp.route("/admin")
 @login_required

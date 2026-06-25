@@ -1,7 +1,9 @@
 <!-- https://getbootstrap.com/docs/5.0/components/ -->
-<tr>
+<tr
+  class="{% if isPastEvents %}table-secondary{% else %}table-info{% endif %} rounded-3 rounded-bottom"
+>
   <!-- Nom -->
-  <td>
+  <td {% if isLast %}style="border-bottom-left-radius: 6px;" {% endif %}>
     <h6 class="mb-0 text-xs ps-2">{{ event.name }}</h6>
   </td>
   <!-- Participants -->
@@ -41,8 +43,33 @@
     <span class="text-xs font-weight-normal">{{ event.location }}</span>
   </td>
   <!-- Actions -->
-  <td class="align-middle text-center">
+  <td
+    {%
+    if
+    isLast
+    %}style="border-bottom-right-radius: 6px;"
+    {%
+    endif
+    %}
+    class="align-middle text-center"
+  >
     <div class="d-flex justify-content-evenly align-items-center gap-1">
+      {% if not isPastEvents %} {% if viewType %}
+      <button
+        id="viewEventButton-{{ event.id_event }}"
+        class="btn btn-light btn-sm d-flex mb-0 align-items-center viewEventButton"
+        title="Voir l'événement"
+        data-bs-toggle="modal"
+        data-bs-target="#modal"
+        data-event-id="{{ event.id_event }}"
+        data-container="body"
+        data-animation="true"
+      >
+        <span class="material-symbols-rounded text-info fs-6">
+          eye_tracking
+        </span>
+      </button>
+      {% else %}
       <button
         id="editEventButton-{{ event.id_event }}"
         class="btn btn-light btn-sm d-flex mb-0 align-items-center editEventButton"
@@ -66,6 +93,7 @@
       >
         <span class="material-symbols-rounded text-danger fs-6">delete</span>
       </button>
+      {% endif %} {% endif %}
     </div>
   </td>
 </tr>
