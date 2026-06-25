@@ -20,27 +20,19 @@ def deleteEvent(id_event, id_user):
         model.event.deleteEvent(id_event, id_user)
         return "Event deleted successfully", None
     except sqlite3.IntegrityError as e:
-<<<<<<< HEAD
         return None, "Integrity error: " + str(e)
-=======
-        return "Integrity error: " + str(e), 400
-    
-def getEvent(id_event) :
-    try :
-        event = model.event.getEvent(id_event)
 
+def getEvent(id_event):
+    try:
+        event = model.event.getEvent(id_event)
         if not event:
-            return {}, 400
-        
+            return None, "Event not found"
         event_dict = dict(event)
         attributes = model.event.getAttributes(event_dict["id_event"])
-        attributes_list = [dict(attr) if hasattr(attr, 'keys') else attr for attr in attributes]
-        event_dict["attributes"] = attributes_list
-        
-        return event_dict, 200
+        event_dict["attributes"] = [dict(attr) if hasattr(attr, 'keys') else attr for attr in attributes]
+        return event_dict, None
     except sqlite3.IntegrityError as e:
-        return {"error": "Integrity error: " + str(e)}, 500
->>>>>>> e4caac1a9cd6ad54644f0d8673d5bf48175076e2
+        return None, "Integrity error: " + str(e)
 
 def getAllEvents():
     try:
@@ -66,17 +58,9 @@ def getAllNextEvents():
         for event in events:
             event_dict = dict(event)
             attributes = model.event.getAttributes(event_dict["id_event"])
-<<<<<<< HEAD
             event_dict["attributes"] = [dict(attr) if hasattr(attr, 'keys') else attr for attr in attributes]
             result.append(event_dict)
         return result, None
-=======
-            attributes_list = [dict(attr) if hasattr(attr, 'keys') else attr for attr in attributes]
-            event_dict["attributes"] = attributes_list
-            result.append(event_dict) 
-
-        return result, 200
->>>>>>> e4caac1a9cd6ad54644f0d8673d5bf48175076e2
     except sqlite3.IntegrityError as e:
         return [], "Integrity error: " + str(e)
 

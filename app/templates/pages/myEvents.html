@@ -1,80 +1,68 @@
-<<<<<<< HEAD {% extends "base.html" %} {% block title %}Mes événements -
-Organ-IMAC{% endblock %} {% block content %}
+{% extends "base.html" %} {% block title %}Mes événements - Organ-IMAC{%
+endblock %} {% block content %}
 <div class="container-fluid h-100">
     <div class="container mt-5">
         {% if error %}
         <div class="alert alert-danger" role="alert">{{ error }}</div>
-        {% endif %} ======= {% extends "base.html" %} {% block title %}Mes
-        événements - Organ-IMAC{% endblock %} {% block content %}
-        <h1 class="mb-4">Mes événements</h1>
-        <div class="container-fluid h-100">
-            <div class="mt-5">
-                >>>>>>> e4caac1a9cd6ad54644f0d8673d5bf48175076e2
-                <div class="card">
-                    <div class="table-responsive">
-                        <table
-                            class="table align-items-center mb-0"
-                            id="data-table"
-                        >
-                            <thead>
-                                <tr>
-                                    <th
-                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3"
-                                    >
-                                        Nom
-                                    </th>
-                                    <th
-                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                    >
-                                        Nombre de participants
-                                    </th>
-                                    <th
-                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                    >
-                                        Date de début
-                                    </th>
-                                    <th
-                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                    >
-                                        Date de fin
-                                    </th>
-                                    <th
-                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                    >
-                                        Lieu
-                                    </th>
-                                    <th
-                                        class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                    >
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <<<<<<< HEAD {% if events|length != 0 %} {% for
-                                event in events %} {% include
-                                'components/rowEvent.html' %} {% endfor %} {%
-                                else %} ======= {%if events|length != 0 %} {%
-                                for event in events %} {% include
-                                'components/rowEvent.html' %} {% endfor %} {%
-                                else %} >>>>>>>
-                                e4caac1a9cd6ad54644f0d8673d5bf48175076e2
-                                <tr>
-                                    <td colspan="7" class="text-center">
-                                        Vous n'avez pas d'événements à venir.
-                                    </td>
-                                </tr>
-                                {% endif %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        {% endif %}
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0" id="data-table">
+                    <thead>
+                        <tr>
+                            <th
+                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3"
+                            >
+                                Nom
+                            </th>
+                            <th
+                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                            >
+                                Nombre de participants
+                            </th>
+                            <th
+                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                            >
+                                Date de début
+                            </th>
+                            <th
+                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                            >
+                                Date de fin
+                            </th>
+                            <th
+                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                            >
+                                Lieu
+                            </th>
+                            <th
+                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                            >
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <<<<<<< HEAD {% if events|length != 0 %} {% for event in
+                        events %} {% include 'components/rowEvent.html' %} {%
+                        endfor %} {% else %} ======= {%if events|length != 0 %}
+                        {% for event in events %} {% include
+                        'components/rowEvent.html' %} {% endfor %} {% else %}
+                        >>>>>>> e4caac1a9cd6ad54644f0d8673d5bf48175076e2
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                Vous n'avez pas d'événements à venir.
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
             </div>
         </div>
-        <<<<<<< HEAD {% endblock %} {% block scripts %}
-        <script src="{{ url_for('static', filename='assets/js/services/deleteEvent.js') }}"></script>
-        ======= {% endblock %} {% block scripts %}
-        <script src="{{ url_for('static', filename='/assets/js/services/deleteEvent.js') }}"></script>
-        >>>>>>> e4caac1a9cd6ad54644f0d8673d5bf48175076e2 {% endblock %}
     </div>
 </div>
+<<<<<<< HEAD {% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='assets/js/services/deleteEvent.js') }}"></script>
+======= {% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='/assets/js/services/deleteEvent.js') }}"></script>
+>>>>>>> e4caac1a9cd6ad54644f0d8673d5bf48175076e2 {% endblock %}
