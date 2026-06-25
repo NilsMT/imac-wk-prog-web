@@ -3,53 +3,49 @@ import service.participation
 
 participation_bp = Blueprint("participation", __name__)
 
-#get participation
 @participation_bp.route("/api/v1/participations/<int:id_event>", methods=['GET'])
 def getParticipation(id_event):
     user = session.get("user")
     if not user:
-        return jsonify({"message": "Retrieval failure : not logged in"}), 401
+        return jsonify({"message": "Échec : non connecté"}), 401
 
     status, participation = service.participation.getParticipation(user["id_user"], id_event)
     participe = dict(participation[0])
-    
+
     match status:
         case 0:
-            return jsonify({"message": "Participation retrieved successfully", "participe": participe["participation_exists"]}), 200
+            return jsonify({"message": "Participation récupérée avec succès", "participe": participe["participation_exists"]}), 200
         case _:
-            return jsonify({"message": "Retrieval failure : unknown returned status"}), 500
+            return jsonify({"message": "Échec : statut de retour inconnu"}), 500
 
-#add participation
 @participation_bp.route("/api/v1/participations/<int:id_event>", methods=['POST'])
 def addParticipation(id_event):
-
     user = session.get("user")
     if not user:
-        return jsonify({"message": "Participation failure : not logged in"}), 401
+        return jsonify({"message": "Échec : non connecté"}), 401
 
     status = service.participation.addParticipation(user["id_user"], id_event)
 
     match status:
         case 0:
-            return jsonify({"message": "Participation added successfully"}), 200
+            return jsonify({"message": "Participation ajoutée avec succès"}), 200
         case 1:
-            return jsonify({"message": "Participation failure : already registered"}), 409
+            return jsonify({"message": "Échec : vous participez déjà à cet événement"}), 409
         case _:
-            return jsonify({"message": "Participation failure : unknown returned status"}), 500
+            return jsonify({"message": "Échec : statut de retour inconnu"}), 500
 
-#remove participation
 @participation_bp.route("/api/v1/participations/<int:id_event>", methods=['DELETE'])
 def removeParticipation(id_event):
     user = session.get("user")
     if not user:
-        return jsonify({"message": "Removal failure : not logged in"}), 401
+        return jsonify({"message": "Échec : non connecté"}), 401
 
     status = service.participation.removeParticipation(user["id_user"], id_event)
 
     match status:
         case 0:
-            return jsonify({"message": "Participation removed successfully"}), 200
+            return jsonify({"message": "Participation supprimée avec succès"}), 200
         case 1:
-            return jsonify({"message": "Removal failure : participation doesn't exist"}), 404
+            return jsonify({"message": "Échec : participation introuvable"}), 404
         case _:
-            return jsonify({"message": "Removal failure : unknown returned status"}), 500
+            return jsonify({"message": "Échec : statut de retour inconnu"}), 500

@@ -22,7 +22,7 @@ function showError(containerId, message) {
       <span class="material-symbols-rounded text-md">error</span>
     </span>
     <span class="alert-text">${message}</span>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" style="padding-top: 1rem; padding-bottom: 1rem;" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>`;
     container.appendChild(alert);

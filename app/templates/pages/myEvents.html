@@ -43,12 +43,9 @@ endblock %} {% block content %}
                         </tr>
                     </thead>
                     <tbody>
-                        <<<<<<< HEAD {% if events|length != 0 %} {% for event in
-                        events %} {% include 'components/rowEvent.html' %} {%
-                        endfor %} {% else %} ======= {%if events|length != 0 %}
-                        {% for event in events %} {% include
-                        'components/rowEvent.html' %} {% endfor %} {% else %}
-                        >>>>>>> e4caac1a9cd6ad54644f0d8673d5bf48175076e2
+                        {% if events|length != 0 %} {% for event in events %} {%
+                        include 'components/rowEvent.html' %} {% endfor %} {%
+                        else %}
                         <tr>
                             <td colspan="7" class="text-center">
                                 Vous n'avez pas d'événements à venir.
@@ -61,8 +58,5 @@ endblock %} {% block content %}
         </div>
     </div>
 </div>
-<<<<<<< HEAD {% endblock %} {% block scripts %}
-<script src="{{ url_for('static', filename='assets/js/services/deleteEvent.js') }}"></script>
-======= {% endblock %} {% block scripts %}
+{% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='/assets/js/services/deleteEvent.js') }}"></script>
->>>>>>> e4caac1a9cd6ad54644f0d8673d5bf48175076e2 {% endblock %}
