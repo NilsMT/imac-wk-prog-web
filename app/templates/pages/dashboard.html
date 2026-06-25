@@ -1,29 +1,33 @@
-{% extends "base.html" %} {% block title %}Tableau de bord - Organ-IMAC{% endblock %} {% block content %}
-<div class="container-fluid vh-80 d-flex align-items-center justify-content-center">
-  <div class="row w-100 g-4">
-    {% if error %}
-    <div class="col-12">
-      <div class="alert alert-danger" role="alert">{{ error }}</div>
-    </div>
-    {% endif %}
-
-    <div class="col-lg-6 col-md-12">
-      <div class="card h-100 shadow-lg">
-        <div class="card-header bg-transparent pt-3">
-          <h5 class="text-dark mb-0">Prochain événement</h5>
-        </div>
-        {% include 'components/nextCard.html' %}
+{% extends "base.html" %} {% block title %}Tableau de bord - Organ-IMAC{%
+endblock %} {% block content %}
+<div class="container-fluid vh-80">
+  <h1 class="h2 text-center mb-4 mt-3">Dashboard</h1>
+  <div class="d-flex align-items-center justify-content-center">
+    <div class="row w-100 g-4">
+      {% if error %}
+      <div class="col-12">
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
       </div>
-    </div>
+      {% endif %}
 
-    <div class="col-lg-6 col-md-12">
-      <div class="card h-100 shadow-lg">
-        <div class="card-header bg-transparent pt-3">
-          <h5 class="text-dark mb-0">Événements disponibles</h5>
+      <div class="col-lg-6 col-md-12">
+        <div class="card h-100 shadow-lg">
+          <div class="card-header bg-transparent pt-3">
+            <h5 class="text-dark mb-0">Prochain événement</h5>
+          </div>
+          {% include 'components/nextCard.html' %}
         </div>
-        {% include 'components/nextEvents.html' %}
+      </div>
+
+      <div class="col-lg-6 col-md-12">
+        <div class="card h-100 shadow-lg">
+          <div class="card-header bg-transparent pt-3">
+            <h5 class="text-dark mb-0">Événements disponibles</h5>
+          </div>
+          {% include 'components/nextEvents.html' %}
+        </div>
       </div>
     </div>
   </div>
+  {% endblock %}
 </div>
-{% endblock %}
