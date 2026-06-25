@@ -1,0 +1,138 @@
+{% extends "base.html" %} {% block title %}Modifier le profil - Organ-IMAC{%
+endblock %} {% block content %}
+<div
+  class="container-fluid vh-80 d-flex align-items-center justify-content-center px-4"
+>
+  <div class="row w-100 justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="formUpdateProfile shadow-lg">
+        <div class="card-header bg-transparent pt-4 px-4 pb-0">
+          <h1 class="text-dark mb-0">Modifier ses informations</h1>
+        </div>
+
+        <div class="card-body px-4 pb-4 pt-2">
+          <form id="profileForm" enctype="multipart/form-data">
+            <!-- Nom -->
+            <div class="input-group input-group-lg input-group-outline my-3">
+              <label for="surname" class="form-label">
+                Nom
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                id="surname"
+                name="surname"
+                required
+              />
+            </div>
+            <!-- Prénom -->
+            <div class="input-group input-group-lg input-group-outline my-3">
+              <label for="name" class="form-label">
+                Prénom
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                id="name"
+                name="name"
+                required
+              />
+            </div>
+            <!-- Promo -->
+            <div class="input-group input-group-lg input-group-outline my-3">
+              <label for="promo" class="form-label">
+                Promo
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                class="form-control form-control-lg"
+                id="promo"
+                name="promo"
+                required
+              />
+            </div>
+
+            <div class="d-grid gap-2">
+              <button
+                type="submit"
+                class="btn bg-gradient-dark py-3"
+                id="submitBtn"
+              >
+                <span id="submitProfileText">Confirmer le changement</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="formUpdatePassword shadow-lg">
+        <div class="card-header bg-transparent pt-4 px-4 pb-0">
+          <h1 class="text-dark mb-0">Modifier son mot de passe</h1>
+        </div>
+
+        <div class="card-body px-4 pb-4 pt-2">
+          <form id="passwordForm" enctype="multipart/form-data">
+            <!-- Ancien mot de passe -->
+            <div class="input-group input-group-lg input-group-outline my-3">
+              <label for="currentPassword" class="form-label">
+                Mot de passe actuel
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="password"
+                class="form-control form-control-lg"
+                id="currentPassword"
+                name="currentPassword"
+                required
+              />
+            </div>
+            <!-- Nouveau mot de passe -->
+            <div class="input-group input-group-lg input-group-outline my-3">
+              <label for="newPassword" class="form-label">
+                Nouveau mot de passe
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="password"
+                class="form-control form-control-lg"
+                id="newPassword"
+                name="newPassword"
+                required
+              />
+            </div>
+            <!-- Confirmation du mot de passe -->
+            <div class="input-group input-group-lg input-group-outline my-3">
+              <label for="confirmPassword" class="form-label">
+                Confirmer le mot de passe
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="password"
+                class="form-control form-control-lg"
+                id="confirmPassword"
+                name="confirmPassword"
+                required
+              />
+            </div>
+
+            <div class="d-grid gap-2">
+              <button
+                type="submit"
+                class="btn bg-gradient-dark py-3"
+                id="submitPasswordBtn"
+              >
+                <span id="submitPasswordText">Changer de mot de passe</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="{{url_for('static', filename='assets/js/services/updateProfile.js')}}"></script>
+{% endblock %}
