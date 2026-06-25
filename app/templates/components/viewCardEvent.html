@@ -1,0 +1,80 @@
+<div class="card shadow-lg h-100">
+  {% if event.image %}
+  <img
+    src="{{ event.image }}"
+    class="card-img-top"
+    alt="Image de l'événement"
+    style="height: 180px; object-fit: cover"
+  />
+  {% else %}
+  <img
+    src="{{ url_for('static', filename='uploads/default.jpg') }}"
+    class="card-img-top"
+    alt="Image de l'événement"
+    style="height: 180px; object-fit: cover"
+  />
+  {% endif %}
+
+  <div class="card-body p-4">
+    <h3 class="card-title text-dark mb-3">{{ event.name }}</h3>
+
+    <div
+      class="d-flex justify-content-between mb-3 text-muted align-items-center"
+    >
+      <div class="d-flex align-items-center">
+        <i class="material-symbols-rounded me-2 text-dark">calendar_month</i>
+        {% if event.end_date[:10] == event.start_date[:10] %}
+        <span>
+          {{ event.start_date[8:10] }}/{{ event.start_date[5:7] }}/{{
+          event.start_date[0:4] }}
+        </span>
+        <span class="text-muted ps-2">
+          ({{ (event.start_date[11:16]).replace(":", "h") }} → {{
+          (event.end_date[11:16]).replace(":", "h") }})
+        </span>
+        {% else %}
+        <span>
+          {{ event.start_date[8:10] }}/{{ event.start_date[5:7] }}/{{
+          event.start_date[0:4] }} ({{ (event.start_date[11:16]).replace(":",
+          "h") }})
+        </span>
+        <span class="text-muted px-2">→</span>
+        <span class="text-muted">
+          {{ event.end_date[8:10] }}/{{ event.end_date[5:7] }}/{{
+          event.end_date[0:4] }} ({{ (event.end_date[11:16]).replace(":", "h")
+          }})
+        </span>
+        {% endif %}
+      </div>
+      <div class="d-flex align-items-center">
+        <i class="material-symbols-rounded me-2 text-dark">location_on</i>
+        <span>{{ event.location }}</span>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <i class="material-symbols-rounded me-2 text-dark">group</i>
+      <span>
+        {{ event.nb_participants }} participant{{ "s" if event.nb_participants
+        != 1 else "" }}
+      </span>
+    </div>
+
+    <p class="card-text text-muted mb-4">
+      {{ event.description|safe if event.description else "Aucune description"
+      }}
+    </p>
+
+    {% if event.attributes %}
+    <hr />
+    <div class="mb-3">
+      {% for attribute in event.attributes %}
+      <div class="d-flex align-items-center">
+        <span class="me-2 text-dark text-bold">{{ attribute.name }} :</span>
+        <span>{{ attribute.value }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>

@@ -1,74 +1,74 @@
 {% extends "base.html" %} {% block title %}Admin - Organ-IMAC{% endblock %} {%
 block content %}
+<h1 class="mb-4">Administration</h1>
 <div class="container-fluid h-100">
-    <div class="container mt-5">
-        <div class="card">
-            <div class="table-responsive">
-                <table class="table align-items-center mb-0" id="data-table">
-                    <thead>
-                        <tr>
-                            <th
-                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                                Id utilisateur
-                            </th>
-                            <th
-                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                                Nom
-                            </th>
-                            <th
-                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                                Prénom
-                            </th>
-                            <th
-                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                                Email
-                            </th>
-                            <th
-                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                                Pseudo
-                            </th>
-                            <th
-                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                                Promo
-                            </th>
-                            <th
-                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                                Est Admin
-                            </th>
-                            <th
-                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                                Est Actif
-                            </th>
-                            <th
-                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {%if users|length != 0 %} {% for user in users %} {%
-                        include 'components/rowAdmin.html' %} {% endfor %} {%
-                        else %}
-                        <tr>
-                            <td colspan="9" class="text-center">
-                                Il n'y a pas d'utilisateurs hormis vous
-                            </td>
-                        </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="mt-5">
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table align-items-center mb-0" id="data-table">
+          <thead>
+            <tr>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3"
+              >
+                Id utilisateur
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Nom
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Prénom
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Email
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Pseudo
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Promo
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Est Admin
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Est Actif
+              </th>
+              <th
+                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {%if users|length != 0 %} {% for user in users %} {% include
+            'components/rowAdmin.html' %} {% endfor %} {% else %}
+            <tr>
+              <td colspan="9" class="text-center">
+                Il n'y a pas d'utilisateurs hormis vous
+              </td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='assets/js/services/admin.js') }}"></script>

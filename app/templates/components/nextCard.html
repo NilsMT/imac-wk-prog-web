@@ -55,7 +55,10 @@
 
     <div class="d-flex align-items-center mb-3">
       <i class="material-symbols-rounded me-2 text-dark">group</i>
-      <span>{{ next_event.nb_participants }} participants</span>
+      <span>
+        {{ next_event.nb_participants }} participant{{ "s" if
+        next_event.nb_participants != 1 else "" }}
+      </span>
     </div>
 
     <p class="card-text text-muted mb-4">
@@ -64,7 +67,6 @@
     </p>
 
     {% if next_event.attributes %}
-    <hr />
     <div class="mb-3">
       {% for attribute in next_event.attributes %}
       <div class="d-flex align-items-center">

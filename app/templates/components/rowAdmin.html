@@ -1,78 +1,78 @@
 <!-- https://getbootstrap.com/docs/5.0/components/ -->
 <tr>
-    <!-- Id utilisateur -->
-    <td>
-        <span class="text-xs font-weight-normal">{{ user.id_user }}</span>
-    </td>
-    <!-- Nom -->
-    <td>
-        <span class="text-xs font-weight-normal">{{ user.name }}</span>
-    </td>
-    <!-- Prénom -->
-    <td>
-        <span class="text-xs font-weight-normal">{{ user.firstname }}</span>
-    </td>
-    <!-- Email -->
-    <td>
-        <span class="text-xs font-weight-normal">{{ user.email }}</span>
-    </td>
-    <!-- Pseudo -->
-    <td>
-        <span class="text-xs font-weight-normal">{{ user.pseudo }}</span>
-    </td>
-    <!-- Promo -->
-    <td>
-        <span class="text-xs font-weight-normal">{{ user.promo }}</span>
-    </td>
-    <!-- Est Admin -->
-    <td class="align-middle">
+  <!-- Id utilisateur -->
+  <td>
+    <span class="text-xs font-weight-bold ps-2">{{ user.id_user }}</span>
+  </td>
+  <!-- Nom -->
+  <td>
+    <span class="text-xs font-weight-normal">{{ user.name }}</span>
+  </td>
+  <!-- Prénom -->
+  <td>
+    <span class="text-xs font-weight-normal">{{ user.firstname }}</span>
+  </td>
+  <!-- Email -->
+  <td>
+    <span class="text-xs font-weight-normal">{{ user.email }}</span>
+  </td>
+  <!-- Pseudo -->
+  <td>
+    <span class="text-xs font-weight-normal">{{ user.pseudo }}</span>
+  </td>
+  <!-- Promo -->
+  <td>
+    <span class="text-xs font-weight-normal">{{ user.promo }}</span>
+  </td>
+  <!-- Est Admin -->
+  <td class="align-middle">
+    <span
+      class="badge rounded-pill {{ 'bg-success' if user.admin == 1 else 'bg-secondary' }} text-white"
+    >
+      {{ "Oui" if user.admin == 1 else "Non" }}
+    </span>
+  </td>
+  <!-- Est Actif -->
+  <td class="align-middle">
+    <span
+      class="badge rounded-pill {{ 'bg-success' if user.active == 1 else 'bg-danger' }} text-white"
+    >
+      {{ "Oui" if user.active == 1 else "Non" }}
+    </span>
+  </td>
+  <!-- Actions -->
+  <td class="align-middle text-center">
+    <div class="d-flex justify-content-evenly">
+      <button
+        id="toggleActiveButton-{{ user.id_user }}-{{ user.active }}"
+        class="btn btn-light btn-sm d-flex mb-0 align-items-center toggleActiveButton"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="{{ 'Désactiver' if user.active == 1 else 'Activer' }}"
+        data-container="body"
+        data-animation="true"
+      >
         <span
-            class="badge rounded-pill {{ 'bg-success' if user.admin == 1 else 'bg-secondary' }} text-white"
+          class="material-symbols-rounded {{ 'text-success' if user.active == 1 else 'text-secondary' }} fs-6"
         >
-            {{ "Oui" if user.admin == 1 else "Non" }}
+          {{ "toggle_on" if user.active == 1 else "toggle_off" }}
         </span>
-    </td>
-    <!-- Est Actif -->
-    <td class="align-middle">
+      </button>
+      <button
+        id="toggleAdminButton-{{ user.id_user }}-{{ user.admin }}"
+        class="btn btn-light btn-sm d-flex mb-0 align-items-center toggleAdminButton"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="{{ 'Retirer admin' if user.admin == 1 else 'Passer admin' }}"
+        data-container="body"
+        data-animation="true"
+      >
         <span
-            class="badge rounded-pill {{ 'bg-success' if user.active == 1 else 'bg-danger' }} text-white"
+          class="material-symbols-rounded {{ 'text-warning' if user.admin == 1 else 'text-secondary' }} fs-6"
         >
-            {{ "Oui" if user.active == 1 else "Non" }}
+          {{ "shield_person" if user.admin == 1 else "shield" }}
         </span>
-    </td>
-    <!-- Actions -->
-    <td class="align-middle text-center">
-        <div class="d-flex justify-content-evenly">
-            <button
-                id="toggleActiveButton-{{ user.id_user }}-{{ user.active }}"
-                class="btn btn-light btn-sm d-flex mb-0 align-items-center toggleActiveButton"
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="{{ 'Désactiver' if user.active == 1 else 'Activer' }}"
-                data-container="body"
-                data-animation="true"
-            >
-                <span
-                    class="material-symbols-rounded {{ 'text-success' if user.active == 1 else 'text-secondary' }} fs-6"
-                >
-                    {{ "toggle_on" if user.active == 1 else "toggle_off" }}
-                </span>
-            </button>
-            <button
-                id="toggleAdminButton-{{ user.id_user }}-{{ user.admin }}"
-                class="btn btn-light btn-sm d-flex mb-0 align-items-center toggleAdminButton"
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="{{ 'Retirer admin' if user.admin == 1 else 'Passer admin' }}"
-                data-container="body"
-                data-animation="true"
-            >
-                <span
-                    class="material-symbols-rounded {{ 'text-warning' if user.admin == 1 else 'text-secondary' }} fs-6"
-                >
-                    {{ "shield_person" if user.admin == 1 else "shield" }}
-                </span>
-            </button>
-        </div>
-    </td>
+      </button>
+    </div>
+  </td>
 </tr>

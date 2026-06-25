@@ -1,0 +1,136 @@
+{% extends "base.html" %} {% block title %}Créer un événement - Organ-IMAC{%
+endblock %} {% block content %}
+<div
+  class="container-fluid vh-80 d-flex align-items-center justify-content-center px-4"
+>
+  <div class="row w-100 justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-lg">
+        <div class="card-header bg-transparent pt-4 px-4 pb-0">
+          <h1 class="text-dark mb-0">Créer un nouvel événement</h1>
+        </div>
+
+        <div class="card-body px-4 pb-4 pt-2">
+          <form id="eventForm" enctype="multipart/form-data">
+            <!-- Nom -->
+            <div class="input-group input-group-lg input-group-outline my-3">
+              <label for="name" class="form-label">
+                Nom de l'événement
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                id="name"
+                name="name"
+                required
+              />
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="input-group input-group-lg input-group-static my-3">
+                  <label>
+                    Date de début
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="datetime-local"
+                    class="form-control form-control-lg"
+                    id="start_date"
+                    name="start_date"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group input-group-lg input-group-static my-3">
+                  <label>
+                    Date de fin
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="datetime-local"
+                    class="form-control form-control-lg"
+                    id="end_date"
+                    name="end_date"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group input-group-lg input-group-outline my-3">
+              <label for="location" class="form-label">
+                Lieu
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                id="location"
+                name="location"
+                required
+              />
+            </div>
+
+            <!-- Description -->
+            <div class="input-group input-group-lg input-group-outline my-3">
+              <textarea
+                class="form-control"
+                id="description"
+                name="description"
+                rows="3"
+                placeholder="Description de l'événement"
+              ></textarea>
+            </div>
+
+            <!-- Image -->
+            <div class="input-group input-group-lg input-group-static my-3">
+              <label for="image">Image de l'événement</label>
+              <input
+                type="file"
+                class="form-control form-control-lg"
+                id="image"
+                name="image"
+                accept="image/png, image/jpg, image/jpeg, image/gif"
+              />
+              <div class="form-text text-muted">
+                Formats autorisés : PNG, JPG, JPEG, GIF (max 16 Mo).
+              </div>
+            </div>
+
+            <!-- Attributs (dynamiques) -->
+            <div class="">
+              <label class="form-label">Attributs</label>
+              <div id="attributesContainer" class="mt-2">
+                <!-- Les attributs seront ajoutés ici dynamiquement -->
+              </div>
+              <button
+                type="button"
+                id="addAttributeBtn"
+                class="btn btn-outline-secondary mt-2 d-flex align-items-center"
+              >
+                <i class="btn-inner--icon material-symbols-rounded me-1">add</i>
+                <span class="btn-inner--text">Ajouter un attribut</span>
+              </button>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button
+                type="submit"
+                class="btn bg-gradient-dark py-3"
+                id="submitBtn"
+              >
+                <span id="submitText">Créer l'événement</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="{{url_for('static', filename='assets/js/services/createEvent.js')}}"></script>
+{% endblock %}

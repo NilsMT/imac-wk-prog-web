@@ -52,7 +52,7 @@
       <!-- Events -->
       <li class="nav-item">
         <a
-          class="nav-link text-dark collapsed"
+          class="nav-link collapsed {% if request.path == '/createEvent' or request.path == '/myEvents' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
           href="#events-collapse"
           data-bs-toggle="collapse"
           aria-expanded="false"
@@ -65,8 +65,8 @@
           <ul class="nav flex-column">
             <li class="nav-item">
               <a
-                class="nav-link text-dark d-flex align-items-center"
-                href="/events/create"
+                class="nav-link {% if request.path == '/createEvent' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+                href="/createEvent"
               >
                 <i class="material-symbols-rounded opacity-5 me-2">
                   add_circle
@@ -76,22 +76,11 @@
             </li>
             <li class="nav-item">
               <a
-                class="nav-link text-dark d-flex align-items-center"
+                class="nav-link {% if request.path == '/myEvents' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
                 href="/myEvents"
               >
                 <i class="material-symbols-rounded opacity-5 me-2">person</i>
                 <span>Mes événements</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-dark d-flex align-items-center"
-                href="/events"
-              >
-                <i class="material-symbols-rounded opacity-5 me-2">
-                  calendar_view_month
-                </i>
-                <span>Événements</span>
               </a>
             </li>
           </ul>
@@ -101,7 +90,10 @@
       <!-- Admin -->
       {% if current_user and current_user.admin %}
       <li class="nav-item">
-        <a class="nav-link text-dark" href="/admin">
+        <a
+          class="nav-link {% if request.path == '/admin' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+          href="/admin"
+        >
           <i class="material-symbols-rounded opacity-5">admin_panel_settings</i>
           <span class="nav-link-text ms-1">Admin</span>
         </a>
@@ -134,12 +126,10 @@
           <i class="material-symbols-rounded me-2">logout</i>
         </span>
         <span class="btn-inner--text">Déconnexion</span>
-      </a>
+      </button>
       {% block scripts %}
       <script src="{{ url_for('static', filename='assets/js/services/logout.js') }}"></script>
-      {% endblock %}
-
-      {% else %}
+      {% endblock %} {% else %}
       <a
         class="btn btn-icon btn-3 btn-outline-dark w-100 d-flex align-items-center justify-content-center mb-2"
         href="/login"

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, jsonify
+from flask import Blueprint, json, request, session, jsonify
 from werkzeug.utils import secure_filename
 import os
 from datetime import datetime
@@ -12,10 +12,20 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@event_bp.route("/api/v1/events/<int:id_event>", methods=['GET'])
+def getEvent(id_event):
+    objects, status = service.event.getEvent(id_event)
+    match status:
+        case 200:
+            return jsonify(objects), status
+        case _:
+            return jsonify(objects), 500
+
+#create event
 @event_bp.route("/api/v1/events", methods=['POST'])
 def createEvent():
     user = session.get("user")
-    data_event = request.form
+    data_event = json.loads(request.form['eventData'])
 
     image_url = None
     if 'image' in request.files:
@@ -32,28 +42,27 @@ def createEvent():
             except Exception as e:
                 return jsonify({"message": f"Erreur lors de l'upload de l'image : {str(e)}"}), 500
 
-    message, error = service.event.createEvent(data_event, user["id_user"], image_url)
-    if error:
-        return jsonify({"message": error}), 400
-    return jsonify({"message": message}), 201
+    messsage, status = service.event.createEvent(data_event, user["id_user"], image_url)
+    return jsonify({"message" : messsage}), status
 
+#delete event
 @event_bp.route("/api/v1/events/<int:id_event>", methods=['DELETE'])
 def deleteEvent(id_event):
     user = session.get("user")
-    message, error = service.event.deleteEvent(id_event, user["id_user"])
-    if error:
-        return jsonify({"message": error}), 400
-    return jsonify({"message": message}), 200
 
+    message, status = service.event.deleteEvent(id_event, user["id_user"])
+    return jsonify({"message" : message}), status
+
+#update event
 @event_bp.route("/api/v1/events/<int:id_event>", methods=['PUT'])
 def updateEvent(id_event):
     user = session.get("user")
     data_event = request.form
-    message, error = service.event.updateEvent(data_event, id_event, user["id_user"])
-    if error:
-        return jsonify({"message": error}), 400
-    return jsonify({"message": message}), 200
 
+    message, status = service.event.updateEvent(data_event, id_event, user["id_user"])
+    return jsonify({"message" : message}), status
+
+# get events
 @event_bp.route("/api/v1/events/all", methods=['GET'])
 def getAllEvents():
     objects, error = service.event.getAllEvents()

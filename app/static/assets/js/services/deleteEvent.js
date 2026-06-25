@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch(`/api/v1/events/${eventId}`, {
                 method: "DELETE",
             });
-            if (response.ok) {
+            if (response.ok || response.status === 200) {
                 window.location.reload();
             } else {
                 console.error("Failed to delete event");

@@ -2,6 +2,20 @@
 import model.participation
 import sqlite3
 
+def getParticipation(id_user, id_event):
+    """
+        Try to get a participation for a given user and event
+
+        Return:
+        >>> 0 if success or if no participation found
+        >>> 1 unknown error
+    """
+    try:
+        participe = model.participation.getParticipation(id_user, id_event)
+        return 0, participe
+    except sqlite3.IntegrityError:
+        return 1, []
+
 def addParticipation(id_user, id_event):
     """
         Try to register a new user with the given infos
