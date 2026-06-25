@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// error alert
+
 function showError(containerId, message) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -33,4 +35,44 @@ function hideError(containerId) {
     if (!container) return;
     const alert = container.querySelector(".alert-feedback");
     if (alert) alert.remove();
+}
+
+// success alert
+
+function showSuccess(formId, message) {
+    let successDiv = document.getElementById(`${formId}-success`);
+    if (!successDiv) {
+        successDiv = document.createElement("div");
+        successDiv.id = `${formId}-success`;
+        successDiv.className = "alert alert-success mt-3";
+        document.getElementById(formId).appendChild(successDiv);
+    }
+    successDiv.textContent = message;
+    successDiv.style.display = "block";
+}
+
+function hideSuccess(formId) {
+    const successDiv = document.getElementById(`${formId}-success`);
+    if (successDiv) successDiv.style.display = "none";
+}
+
+// input status update
+function updateFieldStatus(input, groupId) {
+    const group = document.getElementById(groupId);
+    const inputGroup = group.querySelector(".input-group-outline");
+    if (input.value.trim() === "") {
+        inputGroup.classList.remove("is-valid", "is-invalid");
+    }
+}
+
+// validators
+function verifyEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function verifyPromo(promo) {
+    const currentYear = new Date().getFullYear();
+    const promoNum = parseInt(promo, 10);
+    return !isNaN(promoNum) && promoNum >= 2010 && promoNum <= currentYear + 3;
 }

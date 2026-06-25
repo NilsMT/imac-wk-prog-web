@@ -49,9 +49,21 @@ def admin():
     return render_template("pages/admin.html", current_user=user, users=users)
 
 @page_bp.route("/createEvent")
+@login_required
+@active_required
 def createEvent():
     user = session.get("user")
     if user:
         return render_template("pages/createEvent.html", current_user=user)
+    else :
+        return render_template("pages/no-auth.html")
+
+@page_bp.route("/profile")
+@login_required
+@active_required
+def profile():
+    user = session.get("user")
+    if user:
+        return render_template("pages/profile.html", current_user=user)
     else :
         return render_template("pages/no-auth.html")

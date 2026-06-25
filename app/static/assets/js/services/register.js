@@ -1,14 +1,3 @@
-function verifyEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-function verifyPromo(promo) {
-    const currentYear = new Date().getFullYear();
-    const promoNum = parseInt(promo, 10);
-    return !isNaN(promoNum) && promoNum >= 2010 && promoNum <= currentYear + 3;
-}
-
 function validateForm() {
     const firstname = document.getElementById("firstname").value.trim();
     const name = document.getElementById("name").value.trim();
@@ -16,15 +5,16 @@ function validateForm() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
     const promo = document.getElementById("promo").value.trim();
-    return firstname && name && pseudo && email && verifyEmail(email) && password && promo && verifyPromo(promo);
-}
-
-function updateFieldStatus(input, groupId) {
-    const group = document.getElementById(groupId);
-    const inputGroup = group.querySelector(".input-group-outline");
-    if (input.value.trim() === "") {
-        inputGroup.classList.remove("is-valid", "is-invalid");
-    }
+    return (
+        firstname &&
+        name &&
+        pseudo &&
+        email &&
+        verifyEmail(email) &&
+        password &&
+        promo &&
+        verifyPromo(promo)
+    );
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -33,18 +23,32 @@ document.addEventListener("DOMContentLoaded", function () {
     submitButton.disabled = true;
 
     const fields = [
-        { id: "firstname", groupId: "firstnameGroup", validate: v => v.trim() !== "" },
-        { id: "name",      groupId: "nameGroup",      validate: v => v.trim() !== "" },
-        { id: "pseudo",    groupId: "pseudoGroup",    validate: v => v.trim() !== "" },
-        { id: "email",     groupId: "emailGroup",     validate: v => verifyEmail(v) },
-        { id: "password",  groupId: "passwordGroup",  validate: v => v.trim() !== "" },
-        { id: "promo",     groupId: "promoGroup",     validate: v => verifyPromo(v) },
+        {
+            id: "firstname",
+            groupId: "firstnameGroup",
+            validate: (v) => v.trim() !== "",
+        },
+        { id: "name", groupId: "nameGroup", validate: (v) => v.trim() !== "" },
+        {
+            id: "pseudo",
+            groupId: "pseudoGroup",
+            validate: (v) => v.trim() !== "",
+        },
+        { id: "email", groupId: "emailGroup", validate: (v) => verifyEmail(v) },
+        {
+            id: "password",
+            groupId: "passwordGroup",
+            validate: (v) => v.trim() !== "",
+        },
+        { id: "promo", groupId: "promoGroup", validate: (v) => verifyPromo(v) },
     ];
 
     fields.forEach(({ id, groupId, validate }) => {
         document.getElementById(id).addEventListener("input", function () {
             updateFieldStatus(this, groupId);
-            const inputGroup = document.getElementById(groupId).querySelector(".input-group-outline");
+            const inputGroup = document
+                .getElementById(groupId)
+                .querySelector(".input-group-outline");
             if (validate(this.value)) {
                 inputGroup.classList.add("is-valid");
             } else {
@@ -70,7 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (response.ok) {
             window.location.href = "/";
         } else {
-            showError("registerForm", result.message || "Erreur lors de l'inscription.");
+            showError(
+                "registerForm",
+                result.message || "Erreur lors de l'inscription.",
+            );
         }
     });
 });
