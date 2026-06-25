@@ -1,9 +1,12 @@
-{% extends "base.html" %} {% block title %}Tableau de bord - Organ-IMAC{%
-endblock %} {% block content %}
-<div
-  class="container-fluid vh-80 d-flex align-items-center justify-content-center"
->
+{% extends "base.html" %} {% block title %}Tableau de bord - Organ-IMAC{% endblock %} {% block content %}
+<div class="container-fluid vh-80 d-flex align-items-center justify-content-center">
   <div class="row w-100 g-4">
+    {% if error %}
+    <div class="col-12">
+      <div class="alert alert-danger" role="alert">{{ error }}</div>
+    </div>
+    {% endif %}
+
     <div class="col-lg-6 col-md-12">
       <div class="card h-100 shadow-lg">
         <div class="card-header bg-transparent pt-3">
@@ -22,5 +25,5 @@ endblock %} {% block content %}
       </div>
     </div>
   </div>
-  {% endblock %}
 </div>
+{% endblock %}

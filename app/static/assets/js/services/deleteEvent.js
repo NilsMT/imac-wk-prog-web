@@ -2,11 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const deleteEventButtons = document.querySelectorAll(".deleteEventButton");
 
     deleteEventButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-            console.log(this.id);
+        button.addEventListener("click", async function () {
             const eventId = this.id.split("-")[1];
-            console.log(`Deleting event with ID: ${eventId}`);
-            const response = fetch(`api/v1/event/${eventId}`, {
+            const response = await fetch(`/api/v1/events/${eventId}`, {
                 method: "DELETE",
             });
             if (response.ok) {

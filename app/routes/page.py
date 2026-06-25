@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, abort
 import service.event
+import service.admin
 from decorator import login_required, active_required, admin_required
 
 page_bp = Blueprint("page", __name__)
@@ -8,9 +9,10 @@ page_bp = Blueprint("page", __name__)
 @active_required
 def index():
     user = session.get("user")
-    next_event = service.event.getNextEvent(user["id_user"])[0]
-    events = service.event.getAllNextEvents()[0]
-    return render_template("pages/dashboard.html", current_user=user, next_event=next_event, events=events)
+    next_event, err1 = service.event.getNextEvent(user["id_user"])
+    events, err2 = service.event.getAllNextEvents()
+    error = err1 or err2
+    return render_template("pages/dashboard.html", current_user=user, next_event=next_event, events=events, error=error)
 
 @page_bp.route("/login")
 def login():
@@ -35,8 +37,8 @@ def register():
 @active_required
 def my_events():
     user = session.get("user")
-    events = service.event.getMyEvents(user["id_user"])[0]
-    return render_template("pages/myEvents.html", current_user=user, events=events)
+    events, error = service.event.getMyEvents(user["id_user"])
+    return render_template("pages/myEvents.html", current_user=user, events=events, error=error)
 
 @page_bp.route("/admin")
 @login_required
