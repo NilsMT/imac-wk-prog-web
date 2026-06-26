@@ -1,41 +1,6 @@
 from flask import Blueprint, request, session, jsonify
 import service.user
 import model.auth
-
-user_bp = Blueprint("user", __name__)
-
-@user_bp.route("/api/v1/users", methods=['PUT'])
-def updateUser():
-    user = session.get("user")
-    if not user:
-        return jsonify({"message": "Échec : non connecté"}), 401
-
-    try:
-        data = request.get_json()
-        email = data.get("email")
-        password = data.get("password")
-        name = data.get("name")
-        firstname = data.get("firstname")
-        promo = data.get("promo")
-        pseudo = data.get("pseudo")
-    except:
-        return jsonify({"message": "Échec : requête incomplète ou malformée"}), 400
-
-    status = service.user.updateUser(email, password, name, firstname, promo, pseudo, user["id_user"])
-
-    match status:
-        case 0:
-            return jsonify({"message": "Mise à jour réussie"}), 200
-        case 1:
-            return jsonify({"message": "Échec : un compte avec cet email existe déjà"}), 409
-        case 2:
-            return jsonify({"message": "Échec : un compte avec ce pseudo existe déjà"}), 409
-        case _:
-            return jsonify({"message": "Échec : statut de retour inconnu"}), 500
-
-from flask import Blueprint, request, session, jsonify
-import service.user
-import model.auth
 import crypto
 
 user_bp = Blueprint("user", __name__)
